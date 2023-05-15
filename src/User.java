@@ -16,6 +16,7 @@ public class User {
 
     public User(String userName) {
         this.userName = userName;
+        this.pets = new ArrayList<>();
     }
 
     public String getUserName() {
