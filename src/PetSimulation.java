@@ -1,4 +1,3 @@
-import java.util.Objects;
 import java.util.Scanner;
 
 /**
@@ -90,13 +89,13 @@ public class PetSimulation {
 //            dogFido.train("shake");
 //        }
 //
-//        // Polymorphism example
-//        Pet[] pets = {fido, mittens};
-//        for (Pet pet : pets) {
-//            pet.feed();
-//            pet.play();
-//            pet.train("fetch");
-//            pet.sleep();
-//        }
+        System.out.println("Let's spend some time with your pets.");
+        // Polymorphism example
+        for (Pet pet : currentUser.getPets()) {
+            pet.feed();
+            pet.play();
+            pet.train("fetch");
+            pet.sleep();
+        }
     }
 }
