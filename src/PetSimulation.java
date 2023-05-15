@@ -57,6 +57,9 @@ public class PetSimulation {
         }
     }
 
+    /**
+     * Method to print results of SIMPET session to a report card external file.
+     */
     private static void saveReportCard() {
         try {
             FileWriter fileWriter = new FileWriter("petReportCard.txt");
@@ -95,7 +98,8 @@ public class PetSimulation {
                     }
 
                     Pet pet = currentUser.getPets().get(petIndex);
-                    System.out.print("How would you like to interact with " + pet.getName() + "? (Feed/Play/Train/Sleep): ");
+                    System.out.print("How would you like to interact with " + pet.getName() +
+                            "? (Feed/Play/Train/Sleep): ");
                     String action = inputScanner.nextLine();
 
                     if (action.equalsIgnoreCase("feed")) {
@@ -126,8 +130,6 @@ public class PetSimulation {
                 }
             }
         }
-        System.out.println("Thanks for using SIMPET!");
-        saveReportCard();
     }
 
     /**
@@ -135,17 +137,26 @@ public class PetSimulation {
      * @param args Standard Java Main class args
      */
     public static void main(String[] args) {
-        System.out.println("Hello User, welcome to SIMPET. We will now create 2 pets for you, a dog and a cat.");
+
+        // Welcome message and then user and pet initialization.
+        System.out.println("Hello User, welcome to SIMPET. Please follow the prompts to adopt pets and interact " +
+                "with them.");
         initializeUser();
         initializePets();
 
+        // Printing a summary of adopted pets.
         System.out.println("Your Pets are:");
 
         for (Pet pet : currentUser.getPets()) {
             System.out.println(pet);
         }
 
+        // Interactions with pets.
         System.out.println("Let's spend some time with your pets");
         interactWithPets();
+
+        // Save summary in external file and exit program.
+        System.out.println("Thanks for using SIMPET!");
+        saveReportCard();
     }
 }

@@ -1,3 +1,6 @@
+/**
+ * Abstract Pet class designed to be extended by actual pet types.
+ */
 abstract class Pet {
     protected String name;
     protected int age;
