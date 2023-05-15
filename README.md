@@ -6,5 +6,5 @@ their life.
 
 ### Running Instructions
 
-Clone the repo locally and navigate to the PetSimulation Java Class. Run the "main function" and follow
+Clone the repo locally and navigate to the PetSimulation Java Class. Run the "main" method and follow
 the propmts to see your virtual pet come to life.

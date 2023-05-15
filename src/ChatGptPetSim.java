@@ -115,4 +115,131 @@ public class Main {
         }
     }
 }
+
+ *For the below I gave Chatgpt another prompt:
+ * Using the above Java starter code, please write a Java program that simulates a pet's life.
+ *
+ * The program should
+ * 1. As the user to input a user name and create a user instance.
+ * 2. Ask the user to name pets they would want a select a type until they are satisfied with their pets. Those pets should be stored in an array variable in the user class.
+ * 3. The program should print information onscreen related to the pets the user has.
+ * 4. The program should ask the user which pet they want to interact with and how, and print information related to that onscreen.
+ * 5. The user should be able to exit the program at any time by entering "exit".
+ * 6. before closing the program should print out everything it has printed onscreen onto an output file named petReportcard.txt
+ * 7. The program should feature an abstract pet class, inheritance, polymorphism, and upcasting or downcasting.
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+    System.out.println("Welcome to the Pet Simulator!");
+            System.out.print("Please enter your name: ");
+    String userName = scanner.nextLine();
+    User user = new User(userName);
+
+    boolean running = true;
+            while(running)
+
+    {
+        System.out.print("What kind of pet would you like to create? (Dog/Cat/Exit): ");
+        String petType = scanner.nextLine();
+
+        if (petType.equalsIgnoreCase("exit")) {
+            running = false;
+        } else if (petType.equalsIgnoreCase("dog")) {
+            System.out.print("Please enter a name for your dog: ");
+            String petName = scanner.nextLine();
+            Dog dog = new Dog(petName);
+            user.addPet(dog);
+            System.out.println("You have created a new dog named " + petName + ".");
+        } else if (petType.equalsIgnoreCase("cat")) {
+            System.out.print("Please enter a name for your cat: ");
+            String petName = scanner.nextLine();
+            Cat cat = new Cat(petName);
+            user.addPet(cat);
+            System.out.println("You have created a new cat named " + petName + ".");
+        } else {
+            System.out.println("Invalid input. Please enter Dog, Cat, or Exit.");
+        }
+    }
+
+    // Print information about the user's pets
+            System.out.println("\nHere are your pets:");
+            for(
+    Pet pet :user.getPets())
+
+    {
+        System.out.println(pet.toString());
+    }
+
+    // Interact with pets
+            while(true)
+
+    {
+        System.out.print("Which pet would you like to interact with? (Enter pet number or Exit): ");
+        String input = scanner.nextLine();
+
+        if (input.equalsIgnoreCase("exit")) {
+            break;
+        } else {
+            try {
+                int petIndex = Integer.parseInt(input) - 1;
+                if (petIndex < 0 || petIndex >= user.getPets().size()) {
+                    System.out.println("Invalid input. Please enter a valid pet number or Exit.");
+                    continue;
+                }
+
+                Pet pet = user.getPets().get(petIndex);
+                System.out.print("How would you like to interact with " + pet.getName() + "? (Feed/Play/Train/Sleep): ");
+                String action = scanner.nextLine();
+
+                if (action.equalsIgnoreCase("feed")) {
+                    pet.feed();
+                } else if (action.equalsIgnoreCase("play")) {
+                    pet.play();
+                } else if (action.equalsIgnoreCase("train")) {
+                    System.out.print("What trick would you like to train " + pet.getName() + " to do? ");
+                    String trick = scanner.nextLine();
+                    pet.train(trick);
+                } else if (action.equalsIgnoreCase("sleep")) {
+                    pet.sleep();
+                } else {
+                    System.out.println("Invalid input. Please enter Feed, Play, Train, Sleep, or Exit.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid pet number or Exit.");
+            }
+        }
+    }
+
+    // Write pet report card to file
+        try
+
+    {
+        FileWriter fileWriter = new FileWriter("petReportcard.txt");
+        PrintWriter printWriter = new PrintWriter(fileWriter);
+
+        for (Pet pet : user.getPets()) {
+            printWriter.println(pet.toString());
+        }
+
+        printWriter.close();
+        System.out.println("Pet report card has been saved to petReportcard.txt");
+    } catch(
+    IOException e)
+
+    {
+        System.out.println("An error occurred while writing to the file.");
+        e.printStackTrace();
+    }
+
+    System
+}
+
 */

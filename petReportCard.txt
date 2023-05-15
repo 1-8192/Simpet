@@ -1,0 +1,3 @@
+Tom today you played with: 
+Name: fido, Breed: Golden Retriever, Age: 0, Health: 100, Mood: 115
+Name: Mittens, Age: 0, Health: 100, Mood: 95

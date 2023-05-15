@@ -11,6 +11,10 @@ abstract class Pet {
         this.mood = 100;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void play() {
         System.out.println(name + " is playing!");
         mood += 10;
