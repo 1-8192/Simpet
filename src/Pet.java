@@ -7,6 +7,8 @@ abstract class Pet {
     protected int health;
     protected int mood;
 
+    protected boolean hasPassed = false;
+
     public Pet(String name) {
         this.name = name;
         this.age = 0;
@@ -25,8 +27,6 @@ abstract class Pet {
 
     public abstract void feed();
 
-    public abstract void train(String trick);
-
     public void sleep() {
         System.out.println(name + " is sleeping!");
         mood += 20;
@@ -36,8 +36,8 @@ abstract class Pet {
         age += 1;
         health -= 10;
         if (health <= 0) {
+            hasPassed = true;
             System.out.println(name + " has died!");
-            System.exit(0);
         }
     }
 

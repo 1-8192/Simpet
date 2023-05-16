@@ -84,7 +84,20 @@ public class PetSimulation {
      */
     private static void interactWithPets() {
         while(true) {
-            System.out.print("Which pet would you like to interact with? (Enter pet number or Exit): ");
+            System.out.print("Which pet would you like to interact with? \n");
+            int count =0;
+            for (int i =0; i < currentUser.getPets().size(); i++) {
+                if (!currentUser.getPets().get(i).hasPassed) {
+                    count ++;
+                    System.out.println((i+1) + ": " + currentUser.getPets().get(i));
+                }
+            }
+            if (count == 0) {
+                System.out.println("Your pets have all lived their happy lives. Thaks for using SIMPET!");
+                saveReportCard();
+                System.exit(0);
+            }
+            System.out.println("Enter pet number or type Exit: ");
             String input = inputScanner.nextLine();
 
             if (input.equalsIgnoreCase("exit")) {
@@ -116,8 +129,7 @@ public class PetSimulation {
                             Dog dogPet = (Dog) pet;
                             dogPet.train(trick);
                         } else {
-                            Cat catPet = (Cat) pet;
-                            catPet.train(trick);
+                            System.out.println("You try to train " + pet.getName() + ", but they don't listen.");
                         }
                     } else if (action.equalsIgnoreCase("sleep")) {
                         // Polymorphism example
@@ -129,7 +141,13 @@ public class PetSimulation {
                     System.out.println("Invalid input. Please enter a valid pet number or Exit.");
                 }
             }
+
+            for (Pet pet : currentUser.getPets()) {
+                // Polymorphism example
+                pet.getOlder();
+            }
         }
+        System.exit(0);
     }
 
     /**
