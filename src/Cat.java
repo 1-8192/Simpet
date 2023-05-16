@@ -7,4 +7,9 @@ class Cat extends Pet {
         System.out.println(name + " is eating cat food.");
         mood += 5;
     }
+
+    public void cleanLitterBox() {
+        System.out.println("You cleaned " + name + "'s litter box. No gratitude was shown.");
+        mood += 5;
+    }
 }

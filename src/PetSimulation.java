@@ -112,7 +112,7 @@ public class PetSimulation {
 
                     Pet pet = currentUser.getPets().get(petIndex);
                     System.out.print("How would you like to interact with " + pet.getName() +
-                            "? (Feed/Play/Train/Sleep): ");
+                            "? (Feed/Play/Train/Sleep/Clean litter box): ");
                     String action = inputScanner.nextLine();
 
                     if (action.equalsIgnoreCase("feed")) {
@@ -130,6 +130,15 @@ public class PetSimulation {
                             dogPet.train(trick);
                         } else {
                             System.out.println("You try to train " + pet.getName() + ", but they don't listen.");
+                        }
+                    } else if (action.equalsIgnoreCase("clean litter box")) {
+                        // Downcasting example
+                        if (pet instanceof Cat) {
+                            Cat catPet = (Cat) pet;
+                            catPet.cleanLitterBox();
+                        } else {
+                            System.out.println(pet.getName() + " does not have a litter box. " +
+                                    "Try taking them outside.");
                         }
                     } else if (action.equalsIgnoreCase("sleep")) {
                         // Polymorphism example
