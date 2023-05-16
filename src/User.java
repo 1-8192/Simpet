@@ -19,23 +19,28 @@ public class User {
         this.pets = new ArrayList<>();
     }
 
+    /**
+     * Username getter
+     * @return the userName
+     */
     public String getUserName() {
         return this.userName;
     }
 
+    /**
+     * pets Array getter
+     * @return arraylist of pets owned by the user.
+     */
     public ArrayList<Pet> getPets() {
         return this.pets;
     }
 
-    public void setUserName(String newName) {
-        this.userName = newName;
-    }
-
+    /**
+     * Adds a new pet to the arraylist of pets for the user.
+     *
+     * @param newPet the new pet to add.
+     */
     public void addPet(Pet newPet) {
         this.pets.add(newPet);
-    }
-
-    public void removePet(Pet pet) {
-        this.pets.remove(pet);
     }
 }

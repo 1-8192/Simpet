@@ -7,7 +7,14 @@ import java.util.Scanner;
  * Main Simulation class for the SIMPET Pet simulator program.
  */
 public class PetSimulation {
+    /**
+     * User currently using SIMPET.
+     */
     private static User currentUser;
+
+    /**
+     * Scanner instance we will use to get user input from the terminal.
+     */
     private static final Scanner inputScanner = new Scanner(System.in);
 
     /**
@@ -26,7 +33,7 @@ public class PetSimulation {
     }
 
     /**
-     * Function to ask the user for pets they want to make.
+     * Function to ask the user for pets they want to adopt.
      */
     private static void initializePets() {
         String petName = "";
@@ -44,8 +51,10 @@ public class PetSimulation {
             System.out.println("What would you like to name your pet?");
             petName = inputScanner.nextLine();
             if (petType.equals("dog")) {
+                System.out.println("Which breed of dog would you like to adopt?");
+                String dogBreed = inputScanner.nextLine();
                 // Upcasting Example
-                Pet newPet = new Dog(petName);
+                Pet newPet = new Dog(petName, dogBreed);
                 currentUser.addPet(newPet);
             } else if (petType.equals("cat")) {
                 // Upcasting Example
@@ -65,7 +74,7 @@ public class PetSimulation {
             FileWriter fileWriter = new FileWriter("petReportCard.txt");
             PrintWriter printWriter = new PrintWriter(fileWriter);
 
-            printWriter.println(currentUser.getUserName() + " today you played with: ");
+            printWriter.println(currentUser.getUserName() + " today you interacted with: ");
             for (Pet pet : currentUser.getPets()) {
                 // Polymorphism example
                 printWriter.println(pet.toString());
@@ -81,11 +90,15 @@ public class PetSimulation {
     }
 
     /**
-     * Function to interact with the user's pets.
+     * Function to interact with the user's pets. User will interact with CLI prompts to engage
+     * in different activities with a pet.
      */
     private static void interactWithPets() {
         while(true) {
             System.out.print("Which pet would you like to interact with? \n");
+
+            // Getting options for the user. If the user does not have any pets, or they have passed away,
+            // the simulation ends.
             int count =0;
             for (int i =0; i < currentUser.getPets().size(); i++) {
                 if (!currentUser.getPets().get(i).hasPassed) {
@@ -94,13 +107,14 @@ public class PetSimulation {
                 }
             }
             if (count == 0) {
-                System.out.println("Your pets have all lived their happy lives. Thaks for using SIMPET!");
+                System.out.println("Your pets have all lived their happy lives. Thanks for using SIMPET!");
                 saveReportCard();
                 System.exit(0);
             }
             System.out.println("Enter pet number or type Exit: ");
             String input = inputScanner.nextLine();
 
+            // Main prompt loop.
             if (input.equalsIgnoreCase("exit")) {
                 break;
             } else {
