@@ -23,7 +23,7 @@ public class PetSimulation {
     private static void initializeUser() {
         String userName = "";
 
-        while (userName == "") {
+        while (userName.equals("")) {
             System.out.println("Please enter your name: ");
             userName = inputScanner.nextLine();
             currentUser = new User(userName);
@@ -134,7 +134,6 @@ public class PetSimulation {
                         // Polymorphism example
                         pet.feed();
                     } else if (action.equalsIgnoreCase("play")) {
-                        // Polymorphism example
                         pet.play();
                     } else if (action.equalsIgnoreCase("train")) {
                         System.out.print("What trick would you like to train " + pet.getName() + " to do? ");

@@ -1,2 +1,2 @@
-liam today you played with: 
-Name: kol, Breed: Golden Retriever, Age: 0, Health: 100, Mood: 100
+Ale today you interacted with: 
+Name: fido, Breed: null, Age: 1, Health: 90, Mood: 110
