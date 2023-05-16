@@ -1,3 +1,2 @@
-tom today you played with: 
-Name: bill, Breed: Golden Retriever, Age: 0, Health: 100, Mood: 100
-Name: sam, Age: 0, Health: 100, Mood: 100
+liam today you played with: 
+Name: kol, Breed: Golden Retriever, Age: 0, Health: 100, Mood: 100

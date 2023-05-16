@@ -77,6 +77,7 @@ public class PetSimulation {
             System.out.println("An error occurred while writing to the file.");
             e.printStackTrace();
         }
+        System.exit(0);
     }
 
     /**
@@ -156,7 +157,6 @@ public class PetSimulation {
                 pet.getOlder();
             }
         }
-        System.exit(0);
     }
 
     /**
