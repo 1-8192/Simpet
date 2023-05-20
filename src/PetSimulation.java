@@ -1,6 +1,4 @@
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.Scanner;
 
 /**
@@ -38,9 +36,24 @@ public class PetSimulation {
     private static void initializePets() {
         String petName = "";
         String petType = "";
+        String initialPrompt;
         String continuePrompt = "y";
 
-        while (!continuePrompt.equals("n")) {
+        System.out.println("Would you like to enter pet information from a csv file? [y/n]");
+        initialPrompt = inputScanner.nextLine();
+
+        if (initialPrompt.equalsIgnoreCase("y")) {
+            System.out.println("Please enter the file name: ");
+            String fileName = inputScanner.nextLine();
+            try {
+                initializePetsFromFile(fileName);
+                return;
+            } catch (SimpetInputException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        while (!continuePrompt.equalsIgnoreCase("n")) {
             System.out.println("Would you like to adopt a pet? [y/n]");
             continuePrompt = inputScanner.nextLine();
             if (continuePrompt.equals("n")) {
@@ -67,11 +80,50 @@ public class PetSimulation {
     }
 
     /**
-     * Method to print results of SIMPET session to a report card external file.
+     * Initializes Pets from CSV file
+     *
+     * @param fileName the name of the input file.
      */
-    private static void saveReportCard() throws SimpetIOException {
+    private static void initializePetsFromFile(String fileName) throws SimpetInputException {
+        if (!fileName.endsWith(".csv")) {
+            throw new SimpetInputException("Invalid file format. Only CSV files are supported.");
+        }
+
+        String currLine;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            while ((currLine = br.readLine()) != null) {
+                String[] data = currLine.split(",");
+
+                Pet newPet;
+                if (data.length == 3) {
+                    String name = data[1];
+                    String breed = data[2];
+                    newPet = new Dog(name, breed);
+                } else {
+                    String name = data[1];
+                    newPet = new Cat(name);
+                }
+
+                currentUser.addPet(newPet);
+            }
+        } catch (IOException e) {
+            throw new SimpetInputException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method to print results of SIMPET session to a report card external file.
+     *
+     * @param fileName the name of the report card file.
+     */
+    private static void saveReportCard(String fileName) throws SimpetOutputException {
+        if (!fileName.endsWith(".txt")) {
+            throw new SimpetOutputException("Invalid file format. Only .txt files are supported.");
+        }
+
         try {
-            FileWriter fileWriter = new FileWriter("petReportCard.txt");
+            FileWriter fileWriter = new FileWriter(fileName);
             PrintWriter printWriter = new PrintWriter(fileWriter);
 
             printWriter.println(currentUser.getUserName() + " today you interacted with: ");
@@ -81,9 +133,9 @@ public class PetSimulation {
             }
 
             printWriter.close();
-            System.out.println("Pet report card has been saved to petReportCard.txt");
+            System.out.println("Pet report card has been saved to " + fileName);
         } catch(IOException e) {
-            throw new SimpetIOException(e.getMessage());
+            throw new SimpetOutputException(e.getMessage());
         }
         System.exit(0);
     }
@@ -108,8 +160,10 @@ public class PetSimulation {
             if (count == 0) {
                 System.out.println("Your pets have all lived their happy lives. Thanks for using SIMPET!");
                 try {
-                    saveReportCard();
-                } catch (SimpetIOException e) {
+                    System.out.println("Please pick a file name for your pet report card: ");
+                    String fileName = inputScanner.nextLine();
+                    saveReportCard(fileName);
+                } catch (SimpetOutputException e) {
                     System.out.println(e.getMessage());
                 }
                 System.exit(0);
@@ -200,9 +254,11 @@ public class PetSimulation {
 
         // Save summary in external file and exit program.
         System.out.println("Thanks for using SIMPET!");
+        System.out.println("Please pick a file name for your pet report card: ");
+        String fileName = inputScanner.nextLine();
         try {
-            saveReportCard();
-        } catch (SimpetIOException e) {
+            saveReportCard(fileName);
+        } catch (SimpetOutputException e) {
             System.out.println(e.getMessage());
         }
     }
