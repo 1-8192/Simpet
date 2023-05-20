@@ -1,2 +1,1 @@
 Ale today you interacted with: 
-Name: fido, Breed: null, Age: 1, Health: 90, Mood: 110

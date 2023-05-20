@@ -69,7 +69,7 @@ public class PetSimulation {
     /**
      * Method to print results of SIMPET session to a report card external file.
      */
-    private static void saveReportCard() {
+    private static void saveReportCard() throws SimpetIOException {
         try {
             FileWriter fileWriter = new FileWriter("petReportCard.txt");
             PrintWriter printWriter = new PrintWriter(fileWriter);
@@ -83,8 +83,7 @@ public class PetSimulation {
             printWriter.close();
             System.out.println("Pet report card has been saved to petReportCard.txt");
         } catch(IOException e) {
-            System.out.println("An error occurred while writing to the file.");
-            e.printStackTrace();
+            throw new SimpetIOException(e.getMessage());
         }
         System.exit(0);
     }
@@ -108,7 +107,11 @@ public class PetSimulation {
             }
             if (count == 0) {
                 System.out.println("Your pets have all lived their happy lives. Thanks for using SIMPET!");
-                saveReportCard();
+                try {
+                    saveReportCard();
+                } catch (SimpetIOException e) {
+                    System.out.println(e.getMessage());
+                }
                 System.exit(0);
             }
             System.out.println("Enter pet number or type Exit: ");
@@ -197,6 +200,10 @@ public class PetSimulation {
 
         // Save summary in external file and exit program.
         System.out.println("Thanks for using SIMPET!");
-        saveReportCard();
+        try {
+            saveReportCard();
+        } catch (SimpetIOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
