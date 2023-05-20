@@ -80,11 +80,14 @@ public class PetSimulation {
     }
 
     /**
-     * Initializes Pets from CSV file
+     * Initializes Pets from CSV file.
      *
      * @param fileName the name of the input file.
      */
     private static void initializePetsFromFile(String fileName) throws SimpetInputException {
+        // precondition: user passes in a file name that is a csv file of pet info.
+        // postcondition: if the file is valid csv format and contains pet information, pets are created.
+        // Otherwise, a SimpetInputException is thrown.
         if (!fileName.endsWith(".csv")) {
             throw new SimpetInputException("Invalid file format. Only CSV files are supported.");
         }
@@ -107,37 +110,9 @@ public class PetSimulation {
 
                 currentUser.addPet(newPet);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new SimpetInputException(e.getMessage());
         }
-    }
-
-    /**
-     * Method to print results of SIMPET session to a report card external file.
-     *
-     * @param fileName the name of the report card file.
-     */
-    private static void saveReportCard(String fileName) throws SimpetOutputException {
-        if (!fileName.endsWith(".txt")) {
-            throw new SimpetOutputException("Invalid file format. Only .txt files are supported.");
-        }
-
-        try {
-            FileWriter fileWriter = new FileWriter(fileName);
-            PrintWriter printWriter = new PrintWriter(fileWriter);
-
-            printWriter.println(currentUser.getUserName() + " today you interacted with: ");
-            for (Pet pet : currentUser.getPets()) {
-                // Polymorphism example
-                printWriter.println(pet.toString());
-            }
-
-            printWriter.close();
-            System.out.println("Pet report card has been saved to " + fileName);
-        } catch(IOException e) {
-            throw new SimpetOutputException(e.getMessage());
-        }
-        System.exit(0);
     }
 
     /**
@@ -145,16 +120,16 @@ public class PetSimulation {
      * in different activities with a pet.
      */
     private static void interactWithPets() {
-        while(true) {
+        while (true) {
             System.out.print("Which pet would you like to interact with? \n");
 
             // Getting options for the user. If the user does not have any pets, or they have passed away,
             // the simulation ends.
-            int count =0;
-            for (int i =0; i < currentUser.getPets().size(); i++) {
+            int count = 0;
+            for (int i = 0; i < currentUser.getPets().size(); i++) {
                 if (!currentUser.getPets().get(i).hasPassed) {
-                    count ++;
-                    System.out.println((i+1) + ": " + currentUser.getPets().get(i));
+                    count++;
+                    System.out.println((i + 1) + ": " + currentUser.getPets().get(i));
                 }
             }
             if (count == 0) {
@@ -231,6 +206,7 @@ public class PetSimulation {
 
     /**
      * Main function for the SIMPET Pet Simulator Program
+     *
      * @param args Standard Java Main class args
      */
     public static void main(String[] args) {
@@ -260,6 +236,37 @@ public class PetSimulation {
             saveReportCard(fileName);
         } catch (SimpetOutputException e) {
             System.out.println(e.getMessage());
+        }
+        System.exit(0);
+    }
+
+    /**
+     * Method to print results of SIMPET session to a report card external file.
+     *
+     * @param fileName the name of the report card file.
+     */
+    private static void saveReportCard(String fileName) throws SimpetOutputException {
+        // precondition: user passes in a file name that is txt file
+        // postcondition: if the file name is valid txt format, the pet report card is written.
+        // Otherwise, a SimpetOutputException is thrown.
+        if (!fileName.endsWith(".txt")) {
+            throw new SimpetOutputException("Invalid file format. Only .txt files are supported.");
+        }
+
+        try {
+            FileWriter fileWriter = new FileWriter(fileName);
+            PrintWriter printWriter = new PrintWriter(fileWriter);
+
+            printWriter.println(currentUser.getUserName() + " today you interacted with: ");
+            for (Pet pet : currentUser.getPets()) {
+                // Polymorphism example
+                printWriter.println(pet.toString());
+            }
+
+            printWriter.close();
+            System.out.println("Pet report card has been saved to " + fileName);
+        } catch (Exception e) {
+            throw new SimpetOutputException(e.getMessage());
         }
     }
 }
