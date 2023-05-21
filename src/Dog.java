@@ -6,7 +6,7 @@ class Dog extends Pet {
 
     public Dog(String name, String breed) {
         super(name);
-        breed = breed;
+        this.breed = breed;
     }
 
     public void feed() {

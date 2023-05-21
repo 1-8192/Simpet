@@ -43,6 +43,14 @@ abstract class Pet {
     }
 
     /**
+     * mood getter
+     * @return the pet's mood
+     */
+    public int getMood() {
+        return mood;
+    }
+
+    /**
      * Play time simulation. The pet's mood is improved, and an informational message
      * prints to screen.
      */
