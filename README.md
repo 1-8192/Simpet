@@ -13,7 +13,7 @@ in the ChatGptSimPet.md file.
 
 ### Running Instructions
 
-Clone the repo locally and navigate to the PetSimulation Java Class. Run the "main" method and follow
+Clone the repo locally and navigate to the main.PetSimulation Java Class. Run the "main" method and follow
 the prompts to see your virtual pet come to life. If you would like to upload pet information via CSV,
 please make sure your CSV file is accessible in the project directory. Otherwise, feel free to use the
 included petInput.csv file to test.

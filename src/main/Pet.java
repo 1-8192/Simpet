@@ -1,9 +1,11 @@
+package main;
+
 /**
- * Abstract Pet class designed to be extended by actual pet types.
+ * Abstract main.Pet class designed to be extended by actual pet types.
  */
 abstract class Pet {
     /**
-     * Pet's name
+     * main.Pet's name
      */
     protected String name;
 

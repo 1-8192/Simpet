@@ -1,7 +1,9 @@
+package main;
+
 /**
  * Class to represent a cat type pet.
  */
-class Cat extends Pet {
+public class Cat extends Pet {
     public Cat(String name) {
         super(name);
     }

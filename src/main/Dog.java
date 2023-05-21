@@ -1,7 +1,9 @@
+package main;
+
 /**
  * Class that represents a dog type pet.
  */
-class Dog extends Pet {
+public class Dog extends Pet {
     private String breed;
 
     public Dog(String name, String breed) {

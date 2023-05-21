@@ -5,17 +5,17 @@ their own separate files for readability rather than rely on this one file to ru
 more to the main function, as I wanted to include user input to create a user and desired pets.
 The prompt was: "Please code an implementation for a pet simulation system that allows a user to create a pet
 and take care of it throughout its simulated lifetime. using Java that implements inheritance,
-downcasting, and polymorphism. Make sure the Pet class is abstract."
+downcasting, and polymorphism. Make sure the main.Pet class is abstract."
 
 ## Basic Classes
 
-`abstract class Pet {
+`abstract class main.Pet {
     protected String name;
     protected int age;
     protected int health;
     protected int mood;
 
-    public Pet(String name) {
+    public main.Pet(String name) {
         this.name = name;
         this.age = 0;
         this.health = 100;
@@ -50,8 +50,8 @@ downcasting, and polymorphism. Make sure the Pet class is abstract."
     }
 }
 
-class Dog extends Pet {
-    public Dog(String name) {
+class main.Dog extends main.Pet {
+    public main.Dog(String name) {
         super(name);
     }
 
@@ -66,8 +66,8 @@ class Dog extends Pet {
     }
 }
 
-class Cat extends Pet {
-    public Cat(String name) {
+class main.Cat extends main.Pet {
+    public main.Cat(String name) {
         super(name);
     }
 
@@ -84,7 +84,7 @@ class Cat extends Pet {
 
 public class Main {
     public static void main(String[] args) {
-        Pet fido = new Dog("Fido");
+        main.Pet fido = new main.Dog("Fido");
         System.out.println("You have created a new dog named " + fido.name + ".");
         fido.feed();
         fido.play();
@@ -93,7 +93,7 @@ public class Main {
         fido.getOlder();
         System.out.println(fido.toString());
 
-        Pet mittens = new Cat("Mittens");
+        main.Pet mittens = new main.Cat("Mittens");
         System.out.println("You have created a new cat named " + mittens.name + ".");
         mittens.feed();
         mittens.play();
@@ -103,14 +103,14 @@ public class Main {
         System.out.println(mittens.toString());
 
         // Downcasting example
-        if (fido instanceof Dog) {
-            Dog dogFido = (Dog) fido;
+        if (fido instanceof main.Dog) {
+            main.Dog dogFido = (main.Dog) fido;
             dogFido.train("shake");
         }
 
         // Polymorphism example
-        Pet[] pets = {fido, mittens};
-        for (Pet pet : pets) {
+        main.Pet[] pets = {fido, mittens};
+        for (main.Pet pet : pets) {
             pet.feed();
             pet.play();
             pet.train("fetch");
@@ -146,16 +146,16 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-    System.out.println("Welcome to the Pet Simulator!");
+    System.out.println("Welcome to the main.Pet Simulator!");
             System.out.print("Please enter your name: ");
     String userName = scanner.nextLine();
-    User user = new User(userName);
+    main.User user = new main.User(userName);
 
     boolean running = true;
             while(running)
 
     {
-        System.out.print("What kind of pet would you like to create? (Dog/Cat/Exit): ");
+        System.out.print("What kind of pet would you like to create? (main.Dog/main.Cat/Exit): ");
         String petType = scanner.nextLine();
 
         if (petType.equalsIgnoreCase("exit")) {
@@ -163,24 +163,24 @@ public class Main {
         } else if (petType.equalsIgnoreCase("dog")) {
             System.out.print("Please enter a name for your dog: ");
             String petName = scanner.nextLine();
-            Dog dog = new Dog(petName);
+            main.Dog dog = new main.Dog(petName);
             user.addPet(dog);
             System.out.println("You have created a new dog named " + petName + ".");
         } else if (petType.equalsIgnoreCase("cat")) {
             System.out.print("Please enter a name for your cat: ");
             String petName = scanner.nextLine();
-            Cat cat = new Cat(petName);
+            main.Cat cat = new main.Cat(petName);
             user.addPet(cat);
             System.out.println("You have created a new cat named " + petName + ".");
         } else {
-            System.out.println("Invalid input. Please enter Dog, Cat, or Exit.");
+            System.out.println("Invalid input. Please enter main.Dog, main.Cat, or Exit.");
         }
     }
 
     // Print information about the user's pets
             System.out.println("\nHere are your pets:");
             for(
-    Pet pet :user.getPets())
+    main.Pet pet :user.getPets())
 
     {
         System.out.println(pet.toString());
@@ -203,7 +203,7 @@ public class Main {
                     continue;
                 }
 
-                Pet pet = user.getPets().get(petIndex);
+                main.Pet pet = user.getPets().get(petIndex);
                 System.out.print("How would you like to interact with " + pet.getName() + "? (Feed/Play/Train/Sleep): ");
                 String action = scanner.nextLine();
 
@@ -233,12 +233,12 @@ public class Main {
         FileWriter fileWriter = new FileWriter("petReportcard.txt");
         PrintWriter printWriter = new PrintWriter(fileWriter);
 
-        for (Pet pet : user.getPets()) {
+        for (main.Pet pet : user.getPets()) {
             printWriter.println(pet.toString());
         }
 
         printWriter.close();
-        System.out.println("Pet report card has been saved to petReportcard.txt");
+        System.out.println("main.Pet report card has been saved to petReportcard.txt");
     } catch(
     IOException e)
 
@@ -253,7 +253,7 @@ public class Main {
 ## Unit Tests
 
 I asked ChatGpt to write some unit tests, as well. Below was the prompt:
-Add junit unit tests for the Dog class, which extends the Pet abstract class.
+Add junit unit tests for the main.Dog class, which extends the main.Pet abstract class.
 Please use a BeforeEach method to set up the class for testing.
 
  `import org.junit.jupiter.api.BeforeEach;
@@ -261,12 +261,12 @@ Please use a BeforeEach method to set up the class for testing.
 
  import static org.junit.jupiter.api.Assertions.assertEquals;
 
- public class DogTest {
- private Dog dog;
+ public class test.DogTest {
+ private main.Dog dog;
 
  @BeforeEach
  public void setUp() {
- dog = new Dog("Buddy", "Golden Retriever");
+ dog = new main.Dog("Buddy", "Golden Retriever");
  }
 
  @Test
@@ -291,6 +291,6 @@ Please use a BeforeEach method to set up the class for testing.
  assertEquals("Golden Retriever", dog.getBreed());
  }
 
- // Additional test methods can be added for other behaviors of the Dog class
+ // Additional test methods can be added for other behaviors of the main.Dog class
  }`
  
