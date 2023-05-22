@@ -25,4 +25,17 @@ public class PetSimulationTest {
         assertDoesNotThrow(()-> petSim.initializePetsFromFile(goodFileName));
         assertThrows(SimpetInputException.class, ()-> petSim.initializePetsFromFile(badFileName));
     }
+
+    @Test
+    public void testSaveReportCard() {
+        // Initializing useful variables
+        String goodFileName = "reportcard.txt";
+        String badFileName = "text.gfd";
+        User testUser = new User("Tom");
+        petSim.setCurrentUser(testUser);
+
+        // Testing the output exception.
+        assertDoesNotThrow(()-> petSim.saveReportCard(goodFileName));
+        assertThrows(SimpetInputException.class, ()-> petSim.initializePetsFromFile(badFileName));
+    }
 }

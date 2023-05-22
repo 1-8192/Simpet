@@ -247,11 +247,11 @@ public class PetSimulation {
     }
 
     /**
-     * Method to print results of SIMPET session to a report card external file.
+     * Method to print results of SIMPET session to a report card external file. Public for testing.
      *
      * @param fileName the name of the report card file.
      */
-    private static void saveReportCard(String fileName) throws SimpetOutputException {
+    public static void saveReportCard(String fileName) throws SimpetOutputException {
         // precondition: user passes in a file name that is txt file
         // postcondition: if the file name is valid txt format, the pet report card is written.
         // Otherwise, a main.SimpetOutputException is thrown.
