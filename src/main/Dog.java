@@ -12,6 +12,7 @@ public class Dog extends Pet {
     }
 
     public void feed() {
+        // postcondition: The dog's mood is improved.
         System.out.println(name + " is eating dog food.");
         mood += 5;
     }
@@ -23,6 +24,7 @@ public class Dog extends Pet {
      * @param trick the type of trick the user wants to train
      */
     public void train(String trick) {
+        // postcondition: The dog's mood is improved.
         System.out.println(name + " is learning to " + trick + ".");
         mood += 10;
     }

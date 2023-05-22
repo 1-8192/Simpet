@@ -57,6 +57,7 @@ public class PetSimulation {
                 return;
             } catch (SimpetInputException e) {
                 System.out.println(e.getMessage());
+                System.out.println("Please adopt some pets manually by following the prompts below.");
             }
         }
 
@@ -127,6 +128,8 @@ public class PetSimulation {
      * in different activities with a pet.
      */
     private static void interactWithPets() {
+        // postcondition: The user interacts with their pets, and the pets' mood, age, etc. are affected.
+
         while (true) {
             System.out.print("Which pet would you like to interact with? \n");
 

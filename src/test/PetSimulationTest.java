@@ -13,6 +13,9 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PetSimulationTest {
     public static final PetSimulation petSim = new PetSimulation();
 
+    /**
+     * Testing the method to initialize pet info from an input file.
+     */
     @Test
     public void testInitializePetFromFile() {
         // Initializing useful variables
@@ -26,6 +29,9 @@ public class PetSimulationTest {
         assertThrows(SimpetInputException.class, ()-> petSim.initializePetsFromFile(badFileName));
     }
 
+    /**
+     * Testing the method to save pet results to a report card txt file.
+     */
     @Test
     public void testSaveReportCard() {
         // Initializing useful variables

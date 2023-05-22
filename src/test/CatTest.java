@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Test class for the main.Cat class that extends the main.Pet abstract class.
+ * Test class for the Cat class that extends the Pet abstract class.
  */
 public class CatTest {
     private Cat cat;
