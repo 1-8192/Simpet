@@ -1,1 +1,4 @@
 Ale today you interacted with: 
+Name: fido, Breed: terrier, Age: 1, Health: 90, Mood: 100
+Name: rover, Breed: spaniel, Age: 1, Health: 90, Mood: 110
+Name: mittens, Age: 1, Health: 90, Mood: 100

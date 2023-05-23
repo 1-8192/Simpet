@@ -59,13 +59,21 @@ public class PetSimulation {
                 System.out.println(e.getMessage());
                 System.out.println("Please adopt some pets manually by following the prompts below.");
             }
+        } else {
+            System.out.println("Please adopt some pets manually by following the prompts below.");
         }
 
-        while (!continuePrompt.equalsIgnoreCase("n")) {
+        while (!continuePrompt.equalsIgnoreCase("n") ||
+                !continuePrompt.equalsIgnoreCase("no")) {
             System.out.println("Would you like to adopt a pet? [y/n]");
             continuePrompt = inputScanner.nextLine();
-            if (continuePrompt.equals("n")) {
+            // If the answer is no we are breaking out.
+            if (continuePrompt.equals("n") || continuePrompt.equals("no")) {
                 break;
+            }
+            // If the answer is not "yes," loop around again and prompt.
+            if (!continuePrompt.equals("y") || !continuePrompt.equals("yes")) {
+                continue;
             }
             System.out.println("Would you like to adopt a dog or a cat?");
             petType = inputScanner.nextLine();
@@ -221,7 +229,7 @@ public class PetSimulation {
      */
     public static void main(String[] args) {
         // Welcome message and then user and pet initialization.
-        System.out.println("Hello main.User, welcome to SIMPET. Please follow the prompts to adopt pets and interact " +
+        System.out.println("Hello, welcome to SIMPET. Please follow the prompts to adopt pets and interact " +
                 "with them.");
         initializeUser();
         initializePets();
