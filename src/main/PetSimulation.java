@@ -254,6 +254,10 @@ public class PetSimulation {
         } catch (SimpetOutputException e) {
             System.out.println(e.getMessage());
         }
+        PetStatistics petStats = new PetStatistics(currentUser.getPets());
+        System.out.println("average age: " + petStats.getAverageAge());
+        System.out.println("oldest pet: " + petStats.getOldestPet());
+        System.out.println("most common pet type: " + petStats.getMostCommonType());
         System.exit(0);
     }
 
@@ -281,7 +285,7 @@ public class PetSimulation {
             }
 
             printWriter.close();
-            System.out.println("main.Pet report card has been saved to " + fileName);
+            System.out.println("Pet report card has been saved to " + fileName);
         } catch (Exception e) {
             throw new SimpetOutputException(e.getMessage());
         }

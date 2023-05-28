@@ -37,6 +37,14 @@ abstract class Pet {
     }
 
     /**
+     * age getter
+     * @return the pet's age
+     */
+    public int getAge() {
+        return age;
+    }
+
+    /**
      * name getter
      * @return the pet's name
      */
