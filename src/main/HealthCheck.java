@@ -1,7 +1,19 @@
 package main;
 public class HealthCheck<T extends Pet> {
-    String healthMessage;
-    String moodMessage;
+    private String healthMessage;
+    private String moodMessage;
+
+    /**
+     * Getter method for health Message.
+     * @return the pet's health message.
+     */
+    public String getHealthMessage() {
+        return healthMessage;
+    }
+
+    public String getMoodMessage() {
+        return moodMessage;
+    }
 
     public void performCheckup(T pet) {
         // Perform specific health checks for the given pet type
@@ -14,9 +26,9 @@ public class HealthCheck<T extends Pet> {
                 healthMessage = "Your dog " + dog.getName() + " is in the prime of his life. ";
             }
             if (dog.getMood() < 50) {
-                moodMessage = "Your dog needs more stimulation. Consider longer play times.";
+                moodMessage = "Your dog " + dog.getName() + " needs more stimulation. Consider longer play times.";
             } else {
-                moodMessage = "Your dog seems very happy and fulfilled.";
+                moodMessage = "Your dog " + dog.getName() + " seems very happy and fulfilled.";
             }
         } else if (pet instanceof Cat) {
             // Health checks for cats

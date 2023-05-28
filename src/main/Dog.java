@@ -11,6 +11,14 @@ public class Dog extends Pet {
         this.breed = breed;
     }
 
+    /**
+     * Getter method for the breed variable
+     * @return the dog's breed.
+     */
+    public String getBreed() {
+        return breed;
+    }
+
     public void feed() {
         // postcondition: The dog's mood is improved.
         System.out.println(name + " is eating dog food.");
@@ -27,14 +35,6 @@ public class Dog extends Pet {
         // postcondition: The dog's mood is improved.
         System.out.println(name + " is learning to " + trick + ".");
         mood += 10;
-    }
-
-    /**
-     * Getter method for the breed variable
-     * @return the dog's breed.
-     */
-    public String getBreed() {
-        return breed;
     }
 
     public String toString() {

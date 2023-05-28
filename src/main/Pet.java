@@ -37,19 +37,16 @@ abstract class Pet {
     }
 
     /**
+     * Feeding simulation.
+     */
+    public abstract void feed();
+
+    /**
      * age getter
      * @return the pet's age
      */
     public int getAge() {
         return age;
-    }
-
-    /**
-     * name getter
-     * @return the pet's name
-     */
-    public String getName() {
-        return name;
     }
 
     /**
@@ -61,25 +58,11 @@ abstract class Pet {
     }
 
     /**
-     * Play time simulation. The pet's mood is improved, and an informational message
-     * prints to screen.
+     * name getter
+     * @return the pet's name
      */
-    public void play() {
-        System.out.println(name + " is playing!");
-        mood += 10;
-    }
-
-    /**
-     * Feeding simulation.
-     */
-    public abstract void feed();
-
-    /**
-     * Sleep simulation. Mood improves and a message prints to screen.
-     */
-    public void sleep() {
-        System.out.println(name + " is sleeping!");
-        mood += 20;
+    public String getName() {
+        return name;
     }
 
     /**
@@ -92,6 +75,39 @@ abstract class Pet {
             hasPassed = true;
             System.out.println(name + " has lived a full, meaningful life and has moved on to greener pastures.");
         }
+    }
+
+    /**
+     * Play time simulation. The pet's mood is improved, and an informational message
+     * prints to screen.
+     */
+    public void play() {
+        System.out.println(name + " is playing!");
+        mood += 10;
+    }
+
+    /**
+     * Setter method for the age variable. Used in unit testing.
+     * @return the pet's age.
+     */
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    /**
+     * Setter method for the mood variable. Used in unit testing.
+     * @return the pet's mood.
+     */
+    public void setMood(Integer mood) {
+        this.mood = mood;
+    }
+
+    /**
+     * Sleep simulation. Mood improves and a message prints to screen.
+     */
+    public void sleep() {
+        System.out.println(name + " is sleeping!");
+        mood += 20;
     }
 
     public String toString() {
