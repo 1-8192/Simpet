@@ -3,7 +3,7 @@ package main;
 /**
  * Abstract main.Pet class designed to be extended by actual pet types.
  */
-abstract class Pet {
+public abstract class Pet {
     /**
      * main.Pet's name
      */
