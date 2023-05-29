@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Unit Test class for the HealthCheck class.
+ */
 public class HealthCheckTest {
 
     Dog testDog;

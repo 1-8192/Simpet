@@ -294,3 +294,218 @@ Please use a BeforeEach method to set up the class for testing.
  // Additional test methods can be added for other behaviors of the main.Dog class
  }`
  
+## Assignment 3: Generics
+
+I asked ChatGPT to write 2 generics classes based on some ideas prompts it had already answered. The output was:
+
+`public class HealthCheck<T extends Pet> {
+public void performCheckup(T pet) {
+// Perform specific health checks for the given pet type
+if (pet instanceof Dog) {
+// Health checks for dogs
+Dog dog = (Dog) pet;
+// Perform dog-specific health checks
+// ...
+} else if (pet instanceof Cat) {
+// Health checks for cats
+Cat cat = (Cat) pet;
+// Perform cat-specific health checks
+// ...
+} else {
+// Unsupported pet type
+throw new IllegalArgumentException("Unsupported pet type for health check.");
+}
+}
+}
+` 
+
+AND
+
+`public class PetStatistics<T extends Pet> {
+private List<T> petList;
+
+    public PetStatistics(List<T> petList) {
+        this.petList = petList;
+    }
+
+    public double getAverageAge() {
+        double sumAge = 0;
+        for (T pet : petList) {
+            sumAge += pet.getAge();
+        }
+        return sumAge / petList.size();
+    }
+
+    public String getMostCommonType() {
+        Map<String, Integer> typeCountMap = new HashMap<>();
+        for (T pet : petList) {
+            String type = pet.getClass().getSimpleName();
+            typeCountMap.put(type, typeCountMap.getOrDefault(type, 0) + 1);
+        }
+        int maxCount = 0;
+        String mostCommonType = "";
+        for (Map.Entry<String, Integer> entry : typeCountMap.entrySet()) {
+            if (entry.getValue() > maxCount) {
+                maxCount = entry.getValue();
+                mostCommonType = entry.getKey();
+            }
+        }
+        return mostCommonType;
+    }
+
+    public T getOldestPet() {
+        T oldestPet = null;
+        int maxAge = 0;
+        for (T pet : petList) {
+            if (pet.getAge() > maxAge) {
+                maxAge = pet.getAge();
+                oldestPet = pet;
+            }
+        }
+        return oldestPet;
+    }
+}
+`
+
+I then asked ChatGPT to write unit tests for the above classes. The output was:
+
+`import org.junit.Assert;
+import org.junit.Test;
+
+public class HealthCheckTest {
+@Test
+public void performCheckup_shouldReturnCorrectHealthAndMoodMessageForDog() {
+// Arrange
+HealthCheck<Dog> healthCheck = new HealthCheck<>();
+Dog dog = new Dog("Buddy", 5, 60);
+
+        // Act
+        healthCheck.performCheckup(dog);
+
+        // Assert
+        Assert.assertEquals("Your dog Buddy is in the prime of his life. ", healthCheck.healthMessage);
+        Assert.assertEquals("Your dog seems very happy and fulfilled.", healthCheck.moodMessage);
+    }
+
+    @Test
+    public void performCheckup_shouldReturnCorrectHealthAndMoodMessageForOlderDog() {
+        // Arrange
+        HealthCheck<Dog> healthCheck = new HealthCheck<>();
+        Dog dog = new Dog("Max", 10, 40);
+
+        // Act
+        healthCheck.performCheckup(dog);
+
+        // Assert
+        Assert.assertEquals("Your dog Max is generally healthy, but is getting older. ", healthCheck.healthMessage);
+        Assert.assertEquals("Your dog needs more stimulation. Consider longer play times.", healthCheck.moodMessage);
+    }
+
+    @Test
+    public void performCheckup_shouldReturnCorrectHealthAndMoodMessageForCat() {
+        // Arrange
+        HealthCheck<Cat> healthCheck = new HealthCheck<>();
+        Cat cat = new Cat("Whiskers", 8, 20);
+
+        // Act
+        healthCheck.performCheckup(cat);
+
+        // Assert
+        Assert.assertEquals("Your cat Whiskers is in the prime of their life. ", healthCheck.healthMessage);
+        Assert.assertEquals("Your cat Whiskers needs more stimulation. Consider buying some toys.", healthCheck.moodMessage);
+    }
+
+    @Test
+    public void performCheckup_shouldReturnCorrectHealthAndMoodMessageForOlderCat() {
+        // Arrange
+        HealthCheck<Cat> healthCheck = new HealthCheck<>();
+        Cat cat = new Cat("Smokey", 14, 70);
+
+        // Act
+        healthCheck.performCheckup(cat);
+
+        // Assert
+        Assert.assertEquals("Your cat Smokey is generally healthy, but is getting older. ", healthCheck.healthMessage);
+        Assert.assertEquals("Your cat Smokey seems very happy and fulfilled.", healthCheck.moodMessage);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void performCheckup_shouldThrowExceptionForUnsupportedPetType() {
+        // Arrange
+        HealthCheck<Fish> healthCheck = new HealthCheck<>();
+        Fish fish = new Fish("Nemo", 1, 80);
+
+        // Act
+        healthCheck.performCheckup(fish);
+
+        // Assert
+        // Expecting IllegalArgumentException to be thrown
+    }
+}
+`
+
+AND
+
+`import org.junit.Assert;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class PetStatisticsTest {
+@Test
+public void getAverageAge_shouldReturnCorrectAverageAge() {
+// Arrange
+Dog dog1 = new Dog("Buddy", 5, 60);
+Dog dog2 = new Dog("Max", 10, 40);
+Cat cat1 = new Cat("Whiskers", 8, 20);
+Cat cat2 = new Cat("Smokey", 14, 70);
+List<Pet> petList = Arrays.asList(dog1, dog2, cat1, cat2);
+PetStatistics<Pet> petStatistics = new PetStatistics<>(petList);
+
+        // Act
+        double averageAge = petStatistics.getAverageAge();
+
+        // Assert
+        Assert.assertEquals(9.25, averageAge, 0.01);
+    }
+
+    @Test
+    public void getMostCommonType_shouldReturnCorrectMostCommonType() {
+        // Arrange
+        Dog dog1 = new Dog("Buddy", 5, 60);
+        Dog dog2 = new Dog("Max", 10, 40);
+        Cat cat1 = new Cat("Whiskers", 8, 20);
+        Cat cat2 = new Cat("Smokey", 14, 70);
+        List<Pet> petList = Arrays.asList(dog1, dog2, cat1, cat2);
+        PetStatistics<Pet> petStatistics = new PetStatistics<>(petList);
+
+        // Act
+        String mostCommonType = petStatistics.getMostCommonType();
+
+        // Assert
+        Assert.assertEquals("Cat", mostCommonType);
+    }
+
+    @Test
+    public void getOldestPet_shouldReturnCorrectOldestPet() {
+        // Arrange
+        Dog dog1 = new Dog("Buddy", 5, 60);
+        Dog dog2 = new Dog("Max", 10, 40);
+        Cat cat1 = new Cat("Whiskers", 8, 20);
+        Cat cat2 = new Cat("Smokey", 14, 70);
+        List<Pet> petList = Arrays.asList(dog1, dog2, cat1, cat2);
+        PetStatistics<Pet> petStatistics = new PetStatistics<>(petList);
+
+        // Act
+        Pet oldestPet = petStatistics.getOldestPet();
+
+        // Assert
+        Assert.assertEquals(cat2, oldestPet);
+    }
+}
+`
+
+As you can see by what is in the actual project code, I had to change a good bit of the above, since it was littered 
+with syntax errors and misssing logic. It was still a good starting point though.
