@@ -21,6 +21,10 @@ public class HealthCheckTest {
         testDog = new Dog("Buddy", "boxer");
         testCat = new Cat("Whiskers");
     }
+
+    /**
+     * Test to check that output for a young, healthy pet matches expectations.
+     */
     @Test
     public void testPerformCheckupYoung() {
         // Testing on a dog
@@ -40,6 +44,9 @@ public class HealthCheckTest {
         assertEquals("Your cat Whiskers seems very happy and fulfilled.", healthCheckCat.getMoodMessage());
     }
 
+    /**
+     * Test to check that output for an older pet with a lower mood matches expectations.
+     */
     @Test
     public void testPerformCheckupOlderLowerMood() {
         // Testing on a dog
