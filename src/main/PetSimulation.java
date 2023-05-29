@@ -177,7 +177,7 @@ public class PetSimulation {
 
                     Pet pet = currentUser.getPets().get(petIndex);
                     System.out.print("How would you like to interact with " + pet.getName() +
-                            "? (Feed/Play/Train/Sleep/Clean litter box): ");
+                            "? (Feed/Play/Train/Sleep/Clean litter box/health checkup): ");
                     String action = inputScanner.nextLine();
 
                     if (action.equalsIgnoreCase("feed")) {
@@ -207,8 +207,13 @@ public class PetSimulation {
                     } else if (action.equalsIgnoreCase("sleep")) {
                         // Polymorphism example
                         pet.sleep();
+                    } else if (action.equalsIgnoreCase("health checkup")) {
+                        // Use of generic class
+                        HealthCheck<Pet> healthCheck = new HealthCheck<>();
+                        healthCheck.performCheckup(pet);
                     } else {
-                        System.out.println("Invalid input. Please enter Feed, Play, Train, Sleep, or Exit.");
+                        System.out.println("Invalid input. Please enter Feed, Play, Train, Sleep, health checkup " +
+                                "or Exit.");
                     }
                 } catch (NumberFormatException e) {
                     System.out.println("Invalid input. Please enter a valid pet number or Exit.");
@@ -254,10 +259,6 @@ public class PetSimulation {
         } catch (SimpetOutputException e) {
             System.out.println(e.getMessage());
         }
-        PetStatistics petStats = new PetStatistics(currentUser.getPets());
-        System.out.println("average age: " + petStats.getAverageAge());
-        System.out.println("oldest pet: " + petStats.getOldestPet());
-        System.out.println("most common pet type: " + petStats.getMostCommonType());
         System.exit(0);
     }
 
@@ -278,11 +279,19 @@ public class PetSimulation {
             FileWriter fileWriter = new FileWriter(fileName);
             PrintWriter printWriter = new PrintWriter(fileWriter);
 
+            // Saving pet summary to file
             printWriter.println(currentUser.getUserName() + " today you interacted with: ");
             for (Pet pet : currentUser.getPets()) {
                 // Polymorphism example
                 printWriter.println(pet.toString());
             }
+
+            // Saving pet statistics to file *Generics example
+            printWriter.println("Here are some general statistics for your pets:");
+            PetStatistics petStats = new PetStatistics(currentUser.getPets());
+            printWriter.println("average age: " + petStats.getAverageAge());
+            printWriter.println("oldest pet: " + petStats.getOldestPet());
+            printWriter.println("most common pet type: " + petStats.getMostCommonType());
 
             printWriter.close();
             System.out.println("Pet report card has been saved to " + fileName);

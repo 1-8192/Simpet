@@ -1,4 +1,7 @@
 Ale today you interacted with: 
-Name: fido, Breed: terrier, Age: 1, Health: 90, Mood: 100
-Name: rover, Breed: spaniel, Age: 1, Health: 90, Mood: 105
-Name: mittens, Age: 1, Health: 90, Mood: 100
+Name: fido, Breed: terrier, Age: 3, Health: 70, Mood: 110
+Name: rover, Breed: spaniel, Age: 3, Health: 70, Mood: 100
+Name: mittens, Age: 3, Health: 70, Mood: 105
+average age: 3.0
+oldest pet: Name: fido, Breed: terrier, Age: 3, Health: 70, Mood: 110
+most common pet type: Dog
