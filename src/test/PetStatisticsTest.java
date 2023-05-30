@@ -13,6 +13,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PetStatisticsTest {
+
+    // Declaring variables we will set up in the setUp() method.
     private Dog dogOne;
 
     private Dog dogTwo;
