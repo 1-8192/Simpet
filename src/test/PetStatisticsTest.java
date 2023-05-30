@@ -63,8 +63,15 @@ public class PetStatisticsTest {
      */
     @Test
     public void testGetOldestPet() {
-        Pet oldestPet = testPetStatistics.getOldestPet();
-        assertEquals(catTwo, oldestPet);
+        // One pet case
+        String oldestPet = testPetStatistics.getOldestPet();
+        assertEquals(catTwo.getName(), oldestPet);
+
+        // Case where multiple pets have the same age
+        dogTwo.setAge(18);
+        String oldestPetMulti = testPetStatistics.getOldestPet();
+        String expected = "Max and Smokey";
+        assertEquals(expected, oldestPetMulti);
     }
 
     /**
@@ -72,7 +79,14 @@ public class PetStatisticsTest {
      */
     @Test
     public void testGetHappiestPet() {
-        Pet happiestPet = testPetStatistics.getHappiestPet();
-        assertEquals(catOne, happiestPet);
+        // One pet case
+        String happiestPet = testPetStatistics.getHappiestPet();
+        assertEquals(catOne.getName(), happiestPet);
+
+        // Case where multiple pets have the same mood
+        dogOne.setMood(500);
+        String happiestPetMulti = testPetStatistics.getHappiestPet();
+        String expected = "Buddy and Whiskers";
+        assertEquals(expected, happiestPetMulti);
     }
 }

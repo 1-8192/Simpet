@@ -50,6 +50,14 @@ public abstract class Pet {
     }
 
     /**
+     * health getter
+     * @return the pet's health
+     */
+    public int getHealth() {
+        return health;
+    }
+
+    /**
      * mood getter
      * @return the pet's mood
      */
@@ -70,7 +78,7 @@ public abstract class Pet {
      */
     public void getOlder() {
         age += 1;
-        health -= 10;
+        health -= 5;
         if (health <= 0) {
             hasPassed = true;
             System.out.println(name + " has lived a full, meaningful life and has moved on to greener pastures.");
@@ -83,22 +91,32 @@ public abstract class Pet {
      */
     public void play() {
         System.out.println(name + " is playing!");
+        health += 1;
         mood += 10;
     }
 
     /**
      * Setter method for the age variable. Used in unit testing.
      *
-     * @return the pet's age.
+     * @return void
      */
     public void setAge(Integer age) {
         this.age = age;
     }
 
     /**
+     * Setter method for the health variable.
+     *
+     * @return void
+     */
+    public void setHealth(Integer health) {
+        this.health = health;
+    }
+
+    /**
      * Setter method for the mood variable. Used in unit testing.
      *
-     * @return the pet's mood.
+     * @return void
      */
     public void setMood(Integer mood) {
         this.mood = mood;
@@ -109,6 +127,7 @@ public abstract class Pet {
      */
     public void sleep() {
         System.out.println(name + " is sleeping!");
+        health += 1;
         mood += 20;
     }
 

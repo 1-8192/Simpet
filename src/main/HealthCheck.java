@@ -72,6 +72,7 @@ public class HealthCheck<T extends Pet> {
             // Unsupported pet type
             throw new IllegalArgumentException("Unsupported pet type for health check.");
         }
+        pet.setHealth(pet.getHealth() + 5);
         System.out.println(healthMessage + moodMessage);
     }
 }

@@ -63,18 +63,21 @@ public class PetStatistics<T extends Pet> {
     /**
      * Method to find the oldest pet in a list of pets.
      *
-     * @return the instance of the oldest pet.
+     * @return the name of the oldest pet or pets.
      */
-    public T getOldestPet() {
+    public String getOldestPet() {
         // pre-condition: a list of pet types.
-        // post-condition: the instance of the pet with the oldest age is returned.
+        // post-condition: the name of the pet or pets with the oldest age is returned.
 
-        T oldestPet = null;
+        String oldestPet = "";
         int maxAge = 0;
         for (T pet : petList) {
+            if (pet.getAge() == maxAge && maxAge != 0) {
+                oldestPet += " and " + pet.getName();
+            }
             if (pet.getAge() > maxAge) {
                 maxAge = pet.getAge();
-                oldestPet = pet;
+                oldestPet = pet.getName();
             }
         }
         return oldestPet;
@@ -85,16 +88,19 @@ public class PetStatistics<T extends Pet> {
      *
      * @return the instance of the happiest pet.
      */
-    public T getHappiestPet() {
+    public String getHappiestPet() {
         // pre-condition: a list of pet types.
-        // post-condition: the instance of the pet with the highest mood is returned.
+        // post-condition: the name of the pet or pets with the highest mood is returned.
 
-        T happiestPet = null;
+        String happiestPet = "";
         int maxMood = 0;
         for (T pet : petList) {
+            if (pet.getMood() == maxMood && maxMood != 0) {
+                happiestPet += " and " + pet.getName();
+            }
             if (pet.getMood() > maxMood) {
                 maxMood = pet.getMood();
-                happiestPet = pet;
+                happiestPet = pet.getName();
             }
         }
         return happiestPet;

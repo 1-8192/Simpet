@@ -290,8 +290,8 @@ public class PetSimulation {
             printWriter.println("Here are some general statistics for your pets:");
             PetStatistics<Pet> petStats = new PetStatistics<>(currentUser.getPets());
             printWriter.println("The average pet age was: " + petStats.getAverageAge());
-            printWriter.println("Your oldest pet was: " + petStats.getOldestPet());
-            printWriter.println("Your happiest pet was: " + petStats.getOldestPet());
+            printWriter.println("Your oldest pet(s): " + petStats.getOldestPet());
+            printWriter.println("Your happiest pet(s): " + petStats.getHappiestPet());
             printWriter.println("Your most common pet type: " + petStats.getMostCommonType());
 
             printWriter.close();
