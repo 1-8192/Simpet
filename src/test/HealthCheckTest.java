@@ -60,7 +60,7 @@ public class HealthCheckTest {
 
         assertEquals("Your dog Buddy is generally healthy, but is getting older. ",
                 healthCheckDog.getHealthMessage());
-        assertEquals("Your dog needs more stimulation. Consider longer play times.",
+        assertEquals("Your dog Buddy needs more stimulation. Consider longer play times.",
                 healthCheckDog.getMoodMessage());
 
         // Testing on a cat
