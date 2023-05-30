@@ -79,4 +79,24 @@ public class PetStatistics<T extends Pet> {
         }
         return oldestPet;
     }
+
+    /**
+     * Method to find the happiest pet in a list of pets.
+     *
+     * @return the instance of the happiest pet.
+     */
+    public T getHappiestPet() {
+        // pre-condition: a list of pet types.
+        // post-condition: the instance of the pet with the highest mood is returned.
+
+        T happiestPet = null;
+        int maxMood = 0;
+        for (T pet : petList) {
+            if (pet.getMood() > maxMood) {
+                maxMood = pet.getMood();
+                happiestPet = pet;
+            }
+        }
+        return happiestPet;
+    }
 }

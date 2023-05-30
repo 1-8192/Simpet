@@ -33,6 +33,7 @@ public class PetStatisticsTest {
         dogTwo = new Dog("Max", "corgi");
         catOne = new Cat("Whiskers");
         catTwo = new Cat("Smokey");
+        catOne.setMood(500);
         dogTwo.setAge(12);
         catTwo.setAge(18);
         testPets = Arrays.asList(dogOne, dogTwo, catOne, catTwo);
@@ -61,8 +62,17 @@ public class PetStatisticsTest {
      * Tests the getOldestPet method.
      */
     @Test
-    public void getOldestPet_shouldReturnCorrectOldestPet() {
+    public void testGetOldestPet() {
         Pet oldestPet = testPetStatistics.getOldestPet();
         assertEquals(catTwo, oldestPet);
+    }
+
+    /**
+     * Tests the getOldestPet method.
+     */
+    @Test
+    public void testGetHappiestPet() {
+        Pet happiestPet = testPetStatistics.getHappiestPet();
+        assertEquals(catOne, happiestPet);
     }
 }

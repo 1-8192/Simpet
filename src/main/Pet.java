@@ -88,6 +88,7 @@ public abstract class Pet {
 
     /**
      * Setter method for the age variable. Used in unit testing.
+     *
      * @return the pet's age.
      */
     public void setAge(Integer age) {
@@ -96,6 +97,7 @@ public abstract class Pet {
 
     /**
      * Setter method for the mood variable. Used in unit testing.
+     *
      * @return the pet's mood.
      */
     public void setMood(Integer mood) {
