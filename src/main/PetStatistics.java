@@ -68,7 +68,7 @@ public class PetStatistics<T extends Pet> {
     public T getOldestPet() {
         // pre-condition: a list of pet types.
         // post-condition: the instance of the pet with the oldest age is returned.
-        
+
         T oldestPet = null;
         int maxAge = 0;
         for (T pet : petList) {

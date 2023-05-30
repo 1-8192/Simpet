@@ -63,7 +63,7 @@ public class PetSimulation {
             System.out.println("Please adopt some pets manually by following the prompts below.");
         }
 
-        while (!continuePrompt.equalsIgnoreCase("n") ||
+        while (!continuePrompt.equalsIgnoreCase("n") &&
                 !continuePrompt.equalsIgnoreCase("no")) {
             System.out.println("Would you like to adopt a pet? [y/n]");
             continuePrompt = inputScanner.nextLine();
@@ -72,7 +72,7 @@ public class PetSimulation {
                 break;
             }
             // If the answer is not "yes," loop around again and prompt.
-            if (!continuePrompt.equals("y") || !continuePrompt.equals("yes")) {
+            if (!continuePrompt.equals("y") && !continuePrompt.equals("yes")) {
                 continue;
             }
             System.out.println("Would you like to adopt a dog or a cat?");
