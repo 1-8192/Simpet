@@ -68,7 +68,7 @@ public class PetStatisticsTest {
     }
 
     /**
-     * Tests the getOldestPet method.
+     * Tests the getHappiestPet method.
      */
     @Test
     public void testGetHappiestPet() {

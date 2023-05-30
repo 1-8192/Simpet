@@ -289,9 +289,10 @@ public class PetSimulation {
             // Saving pet statistics to file *Generics example
             printWriter.println("Here are some general statistics for your pets:");
             PetStatistics<Pet> petStats = new PetStatistics<>(currentUser.getPets());
-            printWriter.println("average age: " + petStats.getAverageAge());
-            printWriter.println("oldest pet: " + petStats.getOldestPet());
-            printWriter.println("most common pet type: " + petStats.getMostCommonType());
+            printWriter.println("The average pet age was: " + petStats.getAverageAge());
+            printWriter.println("Your oldest pet was: " + petStats.getOldestPet());
+            printWriter.println("Your happiest pet was: " + petStats.getOldestPet());
+            printWriter.println("Your most common pet type: " + petStats.getMostCommonType());
 
             printWriter.close();
             System.out.println("Pet report card has been saved to " + fileName);
