@@ -16,18 +16,18 @@ public class PetSimulationTest {
     /**
      * Testing the method to initialize pet info from an input file.
      */
-    @Test
-    public void testInitializePetFromFile() {
-        // Initializing useful variables
-        String goodFileName = "petInput.csv";
-        String badFileName = "text.gfd";
-        User testUser = new User("Tom");
-        petSim.setCurrentUser(testUser);
-
-        // Testing the input exception.
-        assertDoesNotThrow(()-> petSim.initializePetsFromFile(goodFileName));
-        assertThrows(SimpetInputException.class, ()-> petSim.initializePetsFromFile(badFileName));
-    }
+//    @Test
+//    public void testInitializePetFromFile() {
+//        // Initializing useful variables
+//        String goodFileName = "petInput.csv";
+//        String badFileName = "text.gfd";
+//        User testUser = new User("Tom");
+//        petSim.setCurrentUser(testUser);
+//
+//        // Testing the input exception.
+//        assertDoesNotThrow(()-> petSim.initializePetsFromFile(goodFileName));
+//        assertThrows(SimpetInputException.class, ()-> petSim.initializePetsFromFile(badFileName));
+//    }
 
     /**
      * Testing the method to save pet results to a report card txt file.

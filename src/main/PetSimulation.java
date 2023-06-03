@@ -96,38 +96,32 @@ public class PetSimulation {
     }
 
     /**
-     * Initializes Pets from CSV file. Public for testing.
+     * Loads previously saved Pets from a bin file.
      *
      * @param fileName the name of the input file.
      */
-    public static void initializePetsFromFile(String fileName) throws SimpetInputException {
-        // precondition: user passes in a file name that is a csv file of pet info.
-        // postcondition: if the file is valid csv format and contains pet information, pets are created.
+    public static void loadPetsFromFile(String fileName) throws SimpetInputException {
+        // precondition: user passes in a file name that is a binary file of pet objects.
+        // postcondition: if the file is valid and contains pet objects, pets are created.
         // Otherwise, a main.SimpetInputException is thrown.
-        if (!fileName.endsWith(".csv")) {
-            throw new SimpetInputException("Invalid file format. Only CSV files are supported.");
+        if (!fileName.endsWith(".bin")) {
+            throw new SimpetInputException("Invalid file format. Only binary files are supported.");
         }
 
-        String currLine;
-
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
-            while ((currLine = br.readLine()) != null) {
-                String[] data = currLine.split(",");
-
-                Pet newPet;
-                if (data.length == 3) {
-                    String name = data[1];
-                    String breed = data[2];
-                    newPet = new Dog(name, breed);
-                } else {
-                    String name = data[1];
-                    newPet = new Cat(name);
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {
+            while (true) {
+                try {
+                    Pet pet = (Pet) ois.readObject();
+                    currentUser.addPet(pet);
+                } catch (ClassNotFoundException e) {
+                    throw new SimpetInputException("Error reading pet objects from file: " + e.getMessage());
+                } catch (EOFException e) {
+                    // End of file reached
+                    break;
                 }
-
-                currentUser.addPet(newPet);
             }
         } catch (Exception e) {
-            throw new SimpetInputException(e.getMessage());
+            throw new SimpetInputException("Error reading pet objects from bin file: " + e.getMessage());
         }
     }
 
@@ -295,6 +289,34 @@ public class PetSimulation {
             printWriter.println("Your most common pet type: " + petStats.getMostCommonType());
 
             printWriter.close();
+            System.out.println("Pet report card has been saved to " + fileName);
+        } catch (Exception e) {
+            throw new SimpetOutputException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method to save the user's pets to a binary file for later.
+     *
+     * @param fileName the name of the report card file.
+     */
+    public static void savePets(String fileName) throws SimpetOutputException {
+        // precondition: user passes in a file name that is a binary file
+        // postcondition: if the file name is valid binary format, the pet report card is written.
+        // Otherwise, a main.SimpetOutputException is thrown.
+        if (!fileName.endsWith(".bin")) {
+            throw new SimpetOutputException("Invalid file format. Only .bin files are supported.");
+        }
+
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(fileName);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+
+            for (Pet pet : currentUser.getPets()) {
+                objectOutputStream.writeObject(pet);
+            }
+
+            objectOutputStream.close();
             System.out.println("Pet report card has been saved to " + fileName);
         } catch (Exception e) {
             throw new SimpetOutputException(e.getMessage());
