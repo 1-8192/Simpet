@@ -18,6 +18,11 @@ public class PetSimulation {
     private static final Scanner inputScanner = new Scanner(System.in);
 
     /**
+     * The bin file where pet objects are saved.
+     */
+    private static final String binFileName = "savedPets.bin";
+
+    /**
      * Function to ask the user for a name to initialize the user.
      */
     private static void initializeUser() {
@@ -53,7 +58,7 @@ public class PetSimulation {
             System.out.println("Please enter the file name: ");
             String fileName = inputScanner.nextLine();
             try {
-                initializePetsFromFile(fileName);
+                loadPetsFromFile(fileName);
                 return;
             } catch (SimpetInputException e) {
                 System.out.println(e.getMessage());
@@ -243,6 +248,14 @@ public class PetSimulation {
         // Interactions with pets.
         System.out.println("Let's spend some time with your pets");
         interactWithPets();
+
+        // Save pets objects to bin file for later use.
+        System.out.println("Saving your pet info to savedPets.bin file: ");
+        try {
+            savePets(binFileName);
+        } catch (SimpetOutputException e) {
+            System.out.println(e.getMessage());
+        }
 
         // Save summary in external file and exit program.
         System.out.println("Thanks for using SIMPET!");
