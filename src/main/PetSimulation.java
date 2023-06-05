@@ -51,14 +51,12 @@ public class PetSimulation {
         String initialPrompt;
         String continuePrompt = "y";
 
-        System.out.println("Would you like to enter pet information from a csv file? [y/n]");
+        System.out.println("Would you like to load existing pets from a save file? [y/n]");
         initialPrompt = inputScanner.nextLine();
 
         if (initialPrompt.equalsIgnoreCase("y")) {
-            System.out.println("Please enter the file name: ");
-            String fileName = inputScanner.nextLine();
             try {
-                loadPetsFromFile(fileName);
+                loadPetsFromFile(binFileName);
                 return;
             } catch (SimpetInputException e) {
                 System.out.println(e.getMessage());
