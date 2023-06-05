@@ -1,0 +1,6 @@
+Test User today you interacted with: 
+Here are some general statistics for your pets:
+The average pet age was: 0.0
+Your oldest pet(s): 
+Your happiest pet(s): 
+Your most common pet type: 
