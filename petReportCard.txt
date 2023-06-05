@@ -1,9 +1,8 @@
-Alessandro today you interacted with: 
-Name: fido, Breed: terrier, Age: 2, Health: 80, Mood: 100
-Name: rover, Breed: spaniel, Age: 2, Health: 80, Mood: 100
-Name: mittens, Age: 2, Health: 80, Mood: 105
+Ale today you interacted with: 
+Name: Rover, Breed: pitbull, Age: 4, Health: 80, Mood: 115
+Name: Mittens, Age: 4, Health: 80, Mood: 105
 Here are some general statistics for your pets:
-The average pet age was: 2.0
-Your oldest pet(s): fido and rover and mittens
-Your happiest pet(s): mittens
-Your most common pet type: Dog
+The average pet age was: 4.0
+Your oldest pet(s): Rover and Mittens
+Your happiest pet(s): Rover
+Your most common pet type: Cat

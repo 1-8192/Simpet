@@ -508,4 +508,4 @@ PetStatistics<Pet> petStatistics = new PetStatistics<>(petList);
 `
 
 As you can see by what is in the actual project code, I had to change a good bit of the above, since it was littered 
-with syntax errors and misssing logic. It was still a good starting point though.
+with syntax errors and missing logic. It was still a good starting point though.

@@ -123,19 +123,25 @@ public class PetStatistics<T extends Pet> {
     }
 
     /**
-     * Gets the average of all pets owned by the user.
+     * Gets the average of all pets owned by the user. Uses a stream and the average() method rather than
+     * a standard loop.
+     *
      * @return the average age of pets.
      */
     public double getAverageAge() {
+        // pre-condition: a list of pets
+        // post-condition: list is unchanged, the average age of pets in the list is returned.
+
         return petList.stream()
                 .mapToDouble(Pet::getAge)
                 .average()
                 .orElse(0.0);
     }
-    /**
-     Gets the most common type of pet in the user's group of pets.
 
-     @return 'dog' or 'cat' or the most common type.
+    /**
+     * Gets the most common type of pet in the user's group of pets.
+     *
+     * @return 'dog' or 'cat' or the most common type.
      */
     public String getMostCommonType() {
         Map<String, Long> typeCountMap = petList.stream()
@@ -148,10 +154,9 @@ public class PetStatistics<T extends Pet> {
     }
 
     /**
-
-     Method to find the oldest pet in a list of pets.
-
-     @return the name of the oldest pet or pets.
+     * Method to find the oldest pet in a list of pets.
+     *
+     * @return the name of the oldest pet or pets.
      */
     public String getOldestPet() {
         int maxAge = petList.stream()
@@ -166,10 +171,9 @@ public class PetStatistics<T extends Pet> {
     }
 
     /**
-
-     Method to find the happiest pet in a list of pets.
-
-     @return the name of the pet or pets with the highest mood.
+     * Method to find the happiest pet in a list of pets.
+     *
+     * @return the name of the pet or pets with the highest mood.
      */
     public String getHappiestPet() {
         int maxMood = petList.stream()
