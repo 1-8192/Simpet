@@ -1,9 +1,11 @@
 package main;
 
+import java.io.Serializable;
+
 /**
  * Abstract main.Pet class designed to be extended by actual pet types.
  */
-public abstract class Pet {
+public abstract class Pet implements Serializable {
     /**
      * main.Pet's name
      */

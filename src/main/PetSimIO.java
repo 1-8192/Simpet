@@ -20,20 +20,26 @@ public class PetSimIO {
             throw new SimpetInputException("Invalid file format. Only binary files are supported.");
         }
 
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {
+        try {
+            FileInputStream fileInput = new FileInputStream(fileName);
+            ObjectInputStream inputStream = new ObjectInputStream(fileInput);
+
             while (true) {
                 try {
-                    Pet pet = (Pet) ois.readObject();
+                    Pet pet = (Pet) inputStream.readObject();
                     currentUser.addPet(pet);
                 } catch (ClassNotFoundException e) {
-                    throw new SimpetInputException("Error reading pet objects from file: " + e.getMessage());
+                    throw new SimpetInputException(e.getMessage());
                 } catch (EOFException e) {
                     // End of file reached
                     break;
                 }
             }
-        } catch (Exception e) {
-            throw new SimpetInputException("Error reading pet objects from bin file: " + e.getMessage());
+            inputStream.close();
+        } catch (FileNotFoundException e) {
+            throw new SimpetInputException(e.getMessage());
+        } catch (IOException e) {
+            throw new SimpetInputException(e.getMessage());
         }
     }
 
@@ -52,15 +58,22 @@ public class PetSimIO {
 
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(fileName);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream){
+                @Override
+                protected void writeStreamHeader() throws IOException {
+                    reset(); // Reset the stream header to avoid conflicts
+                }
+
+            };
 
             for (Pet pet : currentUser.getPets()) {
                 objectOutputStream.writeObject(pet);
+                System.out.println(pet);
             }
 
             objectOutputStream.close();
             System.out.println("Pet information has been saved to " + fileName);
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new SimpetOutputException(e.getMessage());
         }
     }

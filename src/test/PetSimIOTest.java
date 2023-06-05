@@ -1,37 +1,65 @@
 package test;
 
-import main.PetSimIO;
-import main.SimpetInputException;
-import main.SimpetOutputException;
-import main.User;
+import main.*;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 
 public class PetSimIOTest {
 
+    // Declaring useful variables.
+    private User user;
+
+    private String textFileNameInvalid = "pets.txt";
+
+    private String binFileNameValid = "petsTest.bin";
+
+    private Dog dogOne;
+
+    private Dog dogTwo;
+
+    private Cat catOne;
+
+    private Cat catTwo;
+
+    /**
+     * Setting up variables for the upcoming tests.
+     */
+    @BeforeEach
+    public void setUp() {
+        user = new User("Test User");
+        dogOne = new Dog("Buddy", "boxer");
+        dogTwo = new Dog("Max", "corgi");
+        catOne = new Cat("Whiskers");
+        catTwo = new Cat("Smokey");
+        catOne.setMood(500);
+        dogTwo.setAge(12);
+        catTwo.setAge(18);
+        user.addPet(dogOne);
+        user.addPet(dogTwo);
+        user.addPet(catOne);
+        user.addPet(catTwo);
+    }
+
+    /**
+     * Testing use case where invalid file format is used.
+     */
     @Test
     public void testLoadPetsFromFileWithInvalidFileFormat() {
-        User user = new User("Test User");
-        String fileName = "pets.txt";
-
         Assertions.assertThrows(SimpetInputException.class, () -> {
-            PetSimIO.loadPetsFromFile(user, fileName);
+            PetSimIO.loadPetsFromFile(user, textFileNameInvalid);
         });
     }
 
+    /**
+     * Testing pet load from a valid bin file.
+     */
     @Test
     public void testLoadPetsFromFileWithValidFile() {
-        User user = new User("Test User");
-        String fileName = "pets.bin";
-
         // Assuming you have a valid binary file containing pet objects for testing
 
         Assertions.assertDoesNotThrow(() -> {
-            PetSimIO.loadPetsFromFile(user, fileName);
+            PetSimIO.loadPetsFromFile(user, binFileNameValid);
         });
 
         // Assert some conditions based on the loaded pets
@@ -52,11 +80,8 @@ public class PetSimIOTest {
 
     @Test
     public void testSavePetsWithValidFile() {
-        User user = new User("Test User");
-        String fileName = "pets.bin";
-
         Assertions.assertDoesNotThrow(() -> {
-            PetSimIO.savePets(user, fileName);
+            PetSimIO.savePets(user, binFileNameValid);
         });
 
         // Assert some conditions based on the saved pets
@@ -75,7 +100,7 @@ public class PetSimIOTest {
     @Test
     public void testSaveReportCardWithValidFile() {
         User user = new User("Test User");
-        String fileName = "report.txt";
+        String fileName = "reportTest.txt";
 
         Assertions.assertDoesNotThrow(() -> {
             PetSimIO.saveReportCard(user, fileName);
