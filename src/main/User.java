@@ -1,6 +1,8 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Class Representing a user of the SIMPET pet simulation.
@@ -44,5 +46,23 @@ public class User {
      */
     public void addPet(Pet newPet) {
         this.pets.add(newPet);
+    }
+
+    /**
+     * Removing deceased pets from user's pet list and setting the user's pets to live pets.
+     */
+    public void removeDeceasedPets() {
+        List<Pet> petList = this.pets.stream()
+                .filter(pet -> !pet.getHasPassed()).collect(Collectors.toList());
+        this.pets = (ArrayList<Pet>) petList;
+    }
+
+    /**
+     * Setter for pets list.
+     *
+     * @param pets the new pet list.
+     */
+    public void setPets(ArrayList<Pet> pets) {
+        this.pets = pets;
     }
 }

@@ -37,7 +37,7 @@ public class PetStatistics<T extends Pet> {
     }
 
     /**
-     * Gets the most common type of pet in the user's group of pets.
+     * Gets the most common type of pet in the user's group of pets using streams.
      *
      * @return 'dog' or 'cat' or the most common type.
      */
@@ -52,7 +52,7 @@ public class PetStatistics<T extends Pet> {
     }
 
     /**
-     * Method to find the oldest pet in a list of pets.
+     * Method to find the oldest pet in a list of pets. Using streams.
      *
      * @return the name of the oldest pet or pets.
      */
@@ -69,7 +69,7 @@ public class PetStatistics<T extends Pet> {
     }
 
     /**
-     * Method to find the happiest pet in a list of pets.
+     * Method to find the happiest pet in a list of pets using streams.
      *
      * @return the name of the pet or pets with the highest mood.
      */

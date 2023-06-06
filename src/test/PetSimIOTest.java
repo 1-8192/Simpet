@@ -65,12 +65,12 @@ public class PetSimIOTest {
             PetSimIO.loadPetsFromFile(user, binFileNameValid);
         });
 
-        // Assert some conditions based on the loaded pets
-        // Assertions.assertEquals(expectedPetCount, user.getPets().size());
-        // Assertions.assertEquals(expectedPetName, user.getPets().get(0).getName());
-        // ...
+        Assertions.assertEquals("4", user.getPets().size());
     }
 
+    /**
+     * Testing an exception is thrown with a bad file type.
+     */
     @Test
     public void testSavePetsWithInvalidFileFormat() {
         User user = new User("Test User");
@@ -81,35 +81,14 @@ public class PetSimIOTest {
         });
     }
 
+    /**
+     * Testing that objects are written correctly to bin file.
+     */
     @Test
     public void testSavePetsWithValidFile() {
         assertDoesNotThrow(() -> {
             PetSimIO.savePets(user, binFileNameValid);
         });
-
-        // Assert some conditions based on the saved pets
-    }
-
-    @Test
-    public void testSaveReportCardWithInvalidFileFormat() {
-        User user = new User("Test User");
-        String fileName = "report.doc";
-
-        assertThrows(SimpetOutputException.class, () -> {
-            PetSimIO.saveReportCard(user, fileName);
-        });
-    }
-
-    @Test
-    public void testSaveReportCardWithValidFile() {
-        User user = new User("Test User");
-        String fileName = "reportTest.txt";
-
-        assertDoesNotThrow(() -> {
-            PetSimIO.saveReportCard(user, fileName);
-        });
-
-        // Assert some conditions based on the saved report card
     }
 
     /**
@@ -118,7 +97,7 @@ public class PetSimIOTest {
     @Test
     public void testSaveReportCard() {
         // Initializing useful variables
-        String goodFileName = "reportcard.txt";
+        String goodFileName = "reportCardTest.txt";
         String badFileName = "text.gfd";
         User testUser = new User("Tom");
 

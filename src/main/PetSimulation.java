@@ -1,6 +1,9 @@
 package main;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import static main.PetSimIO.*;
 
@@ -11,7 +14,7 @@ public class PetSimulation {
     /**
      * User currently using SIMPET. Public for testing.
      */
-    private static User currentUser;
+    public static User currentUser;
 
     /**
      * Scanner instance we will use to get user input from the terminal.
@@ -24,9 +27,9 @@ public class PetSimulation {
     private static final String binFileName = "savedPets.bin";
 
     /**
-     * Function to ask the user for a name to initialize the user.
+     * Function to ask the user for a name to initialize the user. Public for testing.
      */
-    private static void initializeUser() {
+    public static void initializeUser() {
         // postcondition: A user instance is created for the user using the provided name.
 
         String userName = "";
@@ -101,24 +104,17 @@ public class PetSimulation {
 
     /**
      * Function to interact with the user's pets. User will interact with CLI prompts to engage
-     * in different activities with a pet.
+     * in different activities with a pet.Public for testing.
      */
-    private static void interactWithPets() {
+    public static void interactWithPets() {
         // postcondition: The user interacts with their pets, and the pets' mood, age, etc. are affected.
 
         while (true) {
             System.out.print("Which pet would you like to interact with? \n");
 
-            // Getting options for the user. If the user does not have any pets, or they have passed away,
-            // the simulation ends.
-            int count = 0;
-            for (int i = 0; i < currentUser.getPets().size(); i++) {
-                if (!currentUser.getPets().get(i).hasPassed) {
-                    count++;
-                    System.out.println((i + 1) + ": " + currentUser.getPets().get(i));
-                }
-            }
-            if (count == 0) {
+            // Removing deceased pets from list. If pets are deceased, leaving simulation.
+            currentUser.removeDeceasedPets();
+            if (currentUser.getPets().size() == 0) {
                 System.out.println("Your pets have all lived their happy lives. Thanks for using SIMPET!");
                 try {
                     System.out.println("Please pick a file name for your pet report card: ");
@@ -128,6 +124,11 @@ public class PetSimulation {
                     System.out.println(e.getMessage());
                 }
                 System.exit(0);
+            }
+
+            // printing pet info for user to choose from.
+            for (int i = 0; i < currentUser.getPets().size(); i++) {
+                    System.out.println((i + 1) + ": " + currentUser.getPets().get(i));
             }
             System.out.println("Enter pet number or type Exit: ");
             String input = inputScanner.nextLine();
@@ -236,14 +237,5 @@ public class PetSimulation {
             System.out.println(e.getMessage());
         }
         System.exit(0);
-    }
-
-    /**
-     * Setter method for the current User. Only used for unit testing.
-     *
-     * @param user the user instance we want to set.
-     */
-    public void setCurrentUser(User user) {
-        currentUser = user;
     }
 }

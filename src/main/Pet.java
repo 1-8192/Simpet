@@ -52,6 +52,15 @@ public abstract class Pet implements Serializable {
     }
 
     /**
+     * hasPassed getter.
+     *
+     * @return whether the pet is deceased.
+     */
+    public boolean getHasPassed() {
+        return this.hasPassed;
+    }
+
+    /**
      * health getter
      * @return the pet's health
      */
@@ -104,6 +113,15 @@ public abstract class Pet implements Serializable {
      */
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    /**
+     * Setter method for hasPassed.
+     *
+     * @return void
+     */
+    public void setHasPassed(boolean newHasPassed) {
+        this.hasPassed = newHasPassed;
     }
 
     /**
