@@ -1,8 +1,9 @@
 Ale today you interacted with: 
-Name: Buddy, Breed: Golden Retriever, Age: 2, Health: 90, Mood: 105
-Name: Mittens, Age: 2, Health: 90, Mood: 100
+Name: Rover, Breed: terrier, Age: 0, Health: 20, Mood: 100
+Name: Mittens, Age: 0, Health: 20, Mood: 100
+Name: Fido, Breed: Retriever, Age: 0, Health: 20, Mood: 100
 Here are some general statistics for your pets:
-The average pet age was: 2.0
-Your oldest pet(s): Buddy and Mittens
-Your happiest pet(s): Buddy
-Your most common pet type: Cat
+The average pet age was: 0.0
+Your oldest pet(s): Rover and Mittens and Fido
+Your happiest pet(s): Rover and Mittens and Fido
+Your most common pet type: Dog

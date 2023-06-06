@@ -7,6 +7,10 @@ import java.io.Serializable;
  */
 public abstract class Pet implements Serializable {
     /**
+     * For object I/O.
+     */
+    private static final long serialVersionUID = 1111L;
+    /**
      * main.Pet's name
      */
     protected String name;
@@ -34,7 +38,7 @@ public abstract class Pet implements Serializable {
     public Pet(String name) {
         this.name = name;
         this.age = 0;
-        this.health = 100;
+        this.health = 20;
         this.mood = 100;
     }
 

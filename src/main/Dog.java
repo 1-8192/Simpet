@@ -6,6 +6,14 @@ import java.io.Serializable;
  * Class that represents a dog type pet.
  */
 public class Dog extends Pet implements Serializable {
+    /**
+     * For object I/O.
+     */
+    private static final long serialVersionUID = 1113L;
+
+    /**
+     * Kind of dog.
+     */
     private String breed;
 
     public Dog(String name, String breed) {
@@ -21,6 +29,9 @@ public class Dog extends Pet implements Serializable {
         return breed;
     }
 
+    /**
+     * Feed activity
+     */
     public void feed() {
         // postcondition: The dog's mood is improved.
         System.out.println(name + " is eating dog food.");

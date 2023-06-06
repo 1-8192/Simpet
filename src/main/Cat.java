@@ -6,10 +6,17 @@ import java.io.Serializable;
  * Class to represent a cat type pet.
  */
 public class Cat extends Pet implements Serializable {
+    /**
+     * For object I/O.
+     */
+    private static final long serialVersionUID = 1112L;
     public Cat(String name) {
         super(name);
     }
 
+    /**
+     * Feeding activity.
+     */
     public void feed() {
         // postcondition: The cat's mood is improved.
         System.out.println(name + " is eating cat food.");
