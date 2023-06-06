@@ -1,9 +1,11 @@
 package main;
 
+import java.io.Serializable;
+
 /**
  * Class to represent a cat type pet.
  */
-public class Cat extends Pet {
+public class Cat extends Pet implements Serializable {
     public Cat(String name) {
         super(name);
     }

@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public class PetSimIOTest {
 
     // Declaring useful variables.
@@ -46,7 +49,7 @@ public class PetSimIOTest {
      */
     @Test
     public void testLoadPetsFromFileWithInvalidFileFormat() {
-        Assertions.assertThrows(SimpetInputException.class, () -> {
+        assertThrows(SimpetInputException.class, () -> {
             PetSimIO.loadPetsFromFile(user, textFileNameInvalid);
         });
     }
@@ -58,7 +61,7 @@ public class PetSimIOTest {
     public void testLoadPetsFromFileWithValidFile() {
         // Assuming you have a valid binary file containing pet objects for testing
 
-        Assertions.assertDoesNotThrow(() -> {
+        assertDoesNotThrow(() -> {
             PetSimIO.loadPetsFromFile(user, binFileNameValid);
         });
 
@@ -73,14 +76,14 @@ public class PetSimIOTest {
         User user = new User("Test User");
         String fileName = "pets.txt";
 
-        Assertions.assertThrows(SimpetOutputException.class, () -> {
+        assertThrows(SimpetOutputException.class, () -> {
             PetSimIO.savePets(user, fileName);
         });
     }
 
     @Test
     public void testSavePetsWithValidFile() {
-        Assertions.assertDoesNotThrow(() -> {
+        assertDoesNotThrow(() -> {
             PetSimIO.savePets(user, binFileNameValid);
         });
 
@@ -92,7 +95,7 @@ public class PetSimIOTest {
         User user = new User("Test User");
         String fileName = "report.doc";
 
-        Assertions.assertThrows(SimpetOutputException.class, () -> {
+        assertThrows(SimpetOutputException.class, () -> {
             PetSimIO.saveReportCard(user, fileName);
         });
     }
@@ -102,10 +105,25 @@ public class PetSimIOTest {
         User user = new User("Test User");
         String fileName = "reportTest.txt";
 
-        Assertions.assertDoesNotThrow(() -> {
+        assertDoesNotThrow(() -> {
             PetSimIO.saveReportCard(user, fileName);
         });
 
         // Assert some conditions based on the saved report card
+    }
+
+    /**
+     * Testing the method to save pet results to a report card txt file.
+     */
+    @Test
+    public void testSaveReportCard() {
+        // Initializing useful variables
+        String goodFileName = "reportcard.txt";
+        String badFileName = "text.gfd";
+        User testUser = new User("Tom");
+
+        // Testing the output exception.
+        assertDoesNotThrow(()-> PetSimIO.saveReportCard(user, goodFileName));
+        assertThrows(SimpetInputException.class, ()-> PetSimIO.saveReportCard(user, badFileName));
     }
 }

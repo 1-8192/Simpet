@@ -1,6 +1,8 @@
 package main;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * Static helper class to handle I/O functionality for the SimPet Pet Simulation program.
@@ -10,7 +12,7 @@ public class PetSimIO {
     /**
      * Loads previously saved Pets from a bin file.
      *
-     * @param fileName the name of the input file.
+     * @param fileName the name of the save file to load from.
      */
     public static void loadPetsFromFile(User currentUser, String fileName) throws SimpetInputException {
         // precondition: user passes in a file name that is a binary file of pet objects.
@@ -20,6 +22,8 @@ public class PetSimIO {
             throw new SimpetInputException("Invalid file format. Only binary files are supported.");
         }
 
+        System.out.println("Loading Pets from " + fileName + "...");
+
         try {
             FileInputStream fileInput = new FileInputStream(fileName);
             ObjectInputStream inputStream = new ObjectInputStream(fileInput);
@@ -28,15 +32,16 @@ public class PetSimIO {
                 try {
                     Pet pet = (Pet) inputStream.readObject();
                     currentUser.addPet(pet);
-                } catch (ClassNotFoundException e) {
-                    throw new SimpetInputException(e.getMessage());
                 } catch (EOFException e) {
                     // End of file reached
                     break;
                 }
             }
             inputStream.close();
+            fileInput.close();
         } catch (FileNotFoundException e) {
+            throw new SimpetInputException(e.getMessage());
+        } catch (ClassNotFoundException e) {
             throw new SimpetInputException(e.getMessage());
         } catch (IOException e) {
             throw new SimpetInputException(e.getMessage());
@@ -57,21 +62,37 @@ public class PetSimIO {
         }
 
         try {
-            FileOutputStream fileOutputStream = new FileOutputStream(fileName);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream){
-                @Override
-                protected void writeStreamHeader() throws IOException {
-                    reset(); // Reset the stream header to avoid conflicts
+            // The below is based on the same strategy used in Dr. Braude's Sample assignment where we
+            // check for an existing file first, and if so reset the header.
+            if (Files.exists(Paths.get(fileName))) {
+                FileOutputStream fileOutputStream = new FileOutputStream(fileName, true);
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream) {
+                    @Override
+                    protected void writeStreamHeader() throws IOException {
+                        reset(); // Reset the stream header to avoid conflicts
+                    }
+
+                };
+
+                for (Pet pet : currentUser.getPets()) {
+                    objectOutputStream.writeObject(pet);
+                    System.out.println(pet);
                 }
 
-            };
+                objectOutputStream.close();
+                fileOutputStream.close();
+            } else {
+                FileOutputStream fileOutputStream = new FileOutputStream(fileName);
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
-            for (Pet pet : currentUser.getPets()) {
-                objectOutputStream.writeObject(pet);
-                System.out.println(pet);
+                for (Pet pet : currentUser.getPets()) {
+                    objectOutputStream.writeObject(pet);
+                    System.out.println(pet);
+                }
+
+                objectOutputStream.close();
+                fileOutputStream.close();
             }
-
-            objectOutputStream.close();
             System.out.println("Pet information has been saved to " + fileName);
         } catch (IOException e) {
             throw new SimpetOutputException(e.getMessage());
