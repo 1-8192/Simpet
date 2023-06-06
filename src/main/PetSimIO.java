@@ -22,6 +22,10 @@ public class PetSimIO {
             throw new SimpetInputException("Invalid file format. Only binary files are supported.");
         }
 
+        if (!Files.exists(Paths.get(fileName))) {
+            throw new SimpetInputException("No saved pets file to read from.");
+        }
+
         System.out.println("Loading Pets from " + fileName + "...");
 
         try {
