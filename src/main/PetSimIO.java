@@ -66,37 +66,18 @@ public class PetSimIO {
         }
 
         try {
-            // The below is based on the same strategy used in Dr. Braude's Sample assignment where we
-            // check for an existing file first, and if so reset the header.
-            if (Files.exists(Paths.get(fileName))) {
-                FileOutputStream fileOutputStream = new FileOutputStream(fileName, true);
-                ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream) {
-                    @Override
-                    protected void writeStreamHeader() throws IOException {
-                        reset(); // Reset the stream header to avoid conflicts
-                    }
+            // For this case we are saving at the end of a session for the following session, so we always want
+            // to overwrite the file even if it already exists.
+            FileOutputStream fileOutputStream = new FileOutputStream(fileName, false);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
-                };
-
-                for (Pet pet : currentUser.getPets()) {
-                    objectOutputStream.writeObject(pet);
-                    System.out.println(pet);
-                }
-
-                objectOutputStream.close();
-                fileOutputStream.close();
-            } else {
-                FileOutputStream fileOutputStream = new FileOutputStream(fileName);
-                ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-
-                for (Pet pet : currentUser.getPets()) {
-                    objectOutputStream.writeObject(pet);
-                    System.out.println(pet);
-                }
-
-                objectOutputStream.close();
-                fileOutputStream.close();
+            for (Pet pet : currentUser.getPets()) {
+                objectOutputStream.writeObject(pet);
+                System.out.println(pet);
             }
+
+            objectOutputStream.close();
+            fileOutputStream.close();
             System.out.println("Pet information has been saved to " + fileName);
         } catch (IOException e) {
             throw new SimpetOutputException(e.getMessage());

@@ -1,9 +1,8 @@
 Ale today you interacted with: 
 Name: Rover, Breed: terrier, Age: 0, Health: 20, Mood: 100
 Name: Mittens, Age: 0, Health: 20, Mood: 100
-Name: Fido, Breed: Retriever, Age: 0, Health: 20, Mood: 100
 Here are some general statistics for your pets:
 The average pet age was: 0.0
-Your oldest pet(s): Rover and Mittens and Fido
-Your happiest pet(s): Rover and Mittens and Fido
-Your most common pet type: Dog
+Your oldest pet(s): Rover and Mittens
+Your happiest pet(s): Rover and Mittens
+Your most common pet type: Cat

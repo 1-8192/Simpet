@@ -38,7 +38,7 @@ public abstract class Pet implements Serializable {
     public Pet(String name) {
         this.name = name;
         this.age = 0;
-        this.health = 20;
+        this.health = 100;
         this.mood = 100;
     }
 

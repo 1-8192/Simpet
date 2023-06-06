@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -60,12 +62,13 @@ public class PetSimIOTest {
     @Test
     public void testLoadPetsFromFileWithValidFile() {
         // Assuming you have a valid binary file containing pet objects for testing
-
+        ArrayList<Pet> emptySet = new ArrayList<>();
+        user.setPets(emptySet);
         assertDoesNotThrow(() -> {
             PetSimIO.loadPetsFromFile(user, binFileNameValid);
         });
 
-        Assertions.assertEquals("4", user.getPets().size());
+        Assertions.assertEquals(4, user.getPets().size());
     }
 
     /**
