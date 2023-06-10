@@ -1,6 +1,8 @@
 package main;
 
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static main.PetSimIO.*;
 
@@ -22,6 +24,11 @@ public class PetSimulation {
      * The bin file where pet objects are saved.
      */
     private static final String binFileName = "savedPets.bin";
+
+    /**
+     * thread pool count for concurrent pet aging.
+     */
+    private static final Integer threadPoolCount = 2;
 
     /**
      * Function to ask the user for a name to initialize the user. Public for testing.
@@ -105,6 +112,33 @@ public class PetSimulation {
      */
     public static void interactWithPets() {
         // postcondition: The user interacts with their pets, and the pets' mood, age, etc. are affected.
+
+        // Create a thread pool with a fixed number of threads
+        ExecutorService executorService = Executors.newFixedThreadPool(threadPoolCount);
+
+        // Create a separate thread for background aging and health checks
+        executorService.submit(() -> {
+            while (true) {
+                // Perform background aging for all pets
+                for (Pet pet : currentUser.getPets()) {
+                    pet.getOlder();
+                }
+
+                // Perform background health checks for all pets
+                for (Pet pet : currentUser.getPets()) {
+                    HealthCheck<Pet> healthCheck = new HealthCheck<>();
+                    healthCheck.performCheckup(pet);
+                }
+
+                try {
+                    // Sleep for a certain period between each background task
+                    Thread.sleep(5000); // Adjust the sleep duration as needed
+                } catch (InterruptedException e) {
+                    // Handle interruption if required
+                    System.out.println(e.getMessage());
+                }
+            }
+        });
 
         while (true) {
             System.out.print("Which pet would you like to interact with? \n");
