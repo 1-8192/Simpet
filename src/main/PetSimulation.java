@@ -218,12 +218,27 @@ public class PetSimulation {
                 } catch (NumberFormatException e) {
                     System.out.println("Invalid input. Please enter a valid pet number or Exit.");
                 }
+
+                try {
+                    int petIndex = Integer.parseInt(input) - 1;
+                    if (petIndex < 0 || petIndex >= currentUser.getPets().size()) {
+                        // ...
+                    }
+
+                    Pet pet = currentUser.getPets().get(petIndex);
+
+                    // Submit the pet interaction task to the executor service
+                    executorService.submit(() -> {
+                        // Pet interaction code remains the same as before
+                        // ...
+                    });
+                } catch (NumberFormatException e) {
+                    // ...
+                }
             }
 
-            for (Pet pet : currentUser.getPets()) {
-                // Polymorphism example
-                pet.getOlder();
-            }
+            // Shut down the executor service gracefully
+            executorService.shutdown();
         }
     }
 
