@@ -1,8 +1,12 @@
 package main;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import static main.PetSimIO.*;
 
@@ -113,75 +117,9 @@ public class PetSimulation {
     public static void interactWithPets() {
         // postcondition: The user interacts with their pets, and the pets' mood, age, etc. are affected.
 
-        ExecutorService executorService = Executors.newCachedThreadPool();
-
-        while (true) {
-            currentUser.removeDeceasedPets();
-            if (currentUser.getPets().size() == 0) {
-                System.out.println("Your pets have all lived their happy lives. Thanks for using SIMPET!");
-                try {
-                    System.out.println("Please pick a file name for your pet report card: ");
-                    String fileName = inputScanner.nextLine();
-                    saveReportCard(currentUser, fileName);
-                } catch (SimpetOutputException e) {
-                    System.out.println(e.getMessage());
-                }
-                System.exit(0);
-            }
-
-            for (Pet pet : currentUser.getPets()) {
-                executorService.execute(() -> {
-                    while (pet.getHealth() > 0) {
-                        System.out.println("Pet " + pet.getName() + " is being fed");
-                        pet.feed();
-                        pet.getOlder();
-                        System.out.println("Pet " + pet.getName() + " completed an activity. Summary:");
-                        System.out.println(pet);
-                    }
-                });
-            }
-
-            try {
-                Thread.sleep(1000); // Delay between each loop iteration
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-
-
-//        // Create a thread pool with a fixed number of threads
-//        ExecutorService executorService = Executors.newFixedThreadPool(threadPoolCount);
-//
-//        // Create a separate thread for background aging and health checks
-//        executorService.submit(() -> {
-//            while (true) {
-//                // Perform background aging for all pets
-//                for (Pet pet : currentUser.getPets()) {
-//                    pet.getOlder();
-//                }
-//
-//                // Perform background health checks for all pets
-//                for (Pet pet : currentUser.getPets()) {
-//                    HealthCheck<Pet> healthCheck = new HealthCheck<>();
-//                    healthCheck.performCheckup(pet);
-//                }
-//
-//                try {
-//                    // Sleep for a certain period between each background task
-//                    Thread.sleep(5000); // Adjust the sleep duration as needed
-//                } catch (InterruptedException e) {
-//                    // Handle interruption if required
-//                    System.out.println(e.getMessage());
-//                }
-//            }
-//        });
+//        ExecutorService executorService = Executors.newCachedThreadPool();
 //
 //        while (true) {
-//            System.out.print("Which pet would you like to interact with? \n");
-//
-//            // Removing deceased pets from list. If pets are deceased, leaving simulation.
 //            currentUser.removeDeceasedPets();
 //            if (currentUser.getPets().size() == 0) {
 //                System.out.println("Your pets have all lived their happy lives. Thanks for using SIMPET!");
@@ -195,89 +133,141 @@ public class PetSimulation {
 //                System.exit(0);
 //            }
 //
-//            // printing pet info for user to choose from.
-//            for (int i = 0; i < currentUser.getPets().size(); i++) {
-//                    System.out.println((i + 1) + ": " + currentUser.getPets().get(i));
-//            }
-//            System.out.println("Enter pet number or type Exit: ");
-//            String input = inputScanner.nextLine();
-//
-//            // Main prompt loop.
-//            if (input.equalsIgnoreCase("exit")) {
-//                break;
-//            } else {
-//                try {
-//                    int petIndex = Integer.parseInt(input) - 1;
-//                    if (petIndex < 0 || petIndex >= currentUser.getPets().size()) {
-//                        System.out.println("Invalid input. Please enter a valid pet number or Exit.");
-//                        continue;
-//                    }
-//
-//                    Pet pet = currentUser.getPets().get(petIndex);
-//                    System.out.print("How would you like to interact with " + pet.getName() +
-//                            "? (Feed/Play/Train/Sleep/Clean litter box/health checkup): ");
-//                    String action = inputScanner.nextLine();
-//
-//                    if (action.equalsIgnoreCase("feed")) {
-//                        // Polymorphism example
+//            for (Pet pet : currentUser.getPets()) {
+//                executorService.execute(() -> {
+//                    while (pet.getHealth() > 0) {
+//                        System.out.println("Pet " + pet.getName() + " is being fed");
 //                        pet.feed();
-//                    } else if (action.equalsIgnoreCase("play")) {
-//                        pet.play();
-//                    } else if (action.equalsIgnoreCase("train")) {
-//                        System.out.print("What trick would you like to train " + pet.getName() + " to do? ");
-//                        String trick = inputScanner.nextLine();
-//                        // Downcasting example
-//                        if (pet instanceof Dog) {
-//                            Dog dogPet = (Dog) pet;
-//                            dogPet.train(trick);
-//                        } else {
-//                            System.out.println("You try to train " + pet.getName() + ", but they don't listen.");
-//                        }
-//                    } else if (action.equalsIgnoreCase("clean litter box")) {
-//                        // Downcasting example
-//                        if (pet instanceof Cat) {
-//                            Cat catPet = (Cat) pet;
-//                            catPet.cleanLitterBox();
-//                        } else {
-//                            System.out.println(pet.getName() + " does not have a litter box. " +
-//                                    "Try taking them outside.");
-//                        }
-//                    } else if (action.equalsIgnoreCase("sleep")) {
-//                        // Polymorphism example
-//                        pet.sleep();
-//                    } else if (action.equalsIgnoreCase("health checkup")) {
-//                        // Use of generic class
-//                        HealthCheck<Pet> healthCheck = new HealthCheck<>();
-//                        healthCheck.performCheckup(pet);
-//                    } else {
-//                        System.out.println("Invalid input. Please enter Feed, Play, Train, Sleep, health checkup " +
-//                                "or Exit.");
+//                        pet.getOlder();
+//                        System.out.println("Pet " + pet.getName() + " completed an activity. Summary:");
+//                        System.out.println(pet);
 //                    }
-//                } catch (NumberFormatException e) {
-//                    System.out.println("Invalid input. Please enter a valid pet number or Exit.");
-//                }
-//
-//                try {
-//                    int petIndex = Integer.parseInt(input) - 1;
-//                    if (petIndex < 0 || petIndex >= currentUser.getPets().size()) {
-//                        // ...
-//                    }
-//
-//                    Pet pet = currentUser.getPets().get(petIndex);
-//
-//                    // Submit the pet interaction task to the executor service
-//                    executorService.submit(() -> {
-//                        // Pet interaction code remains the same as before
-//                        // ...
-//                    });
-//                } catch (NumberFormatException e) {
-//                    // ...
-//                }
+//                });
 //            }
 //
-//            // Shut down the executor service gracefully
-//            executorService.shutdown();
+//            try {
+//                Thread.sleep(1000); // Delay between each loop iteration
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
 //        }
+
+
+
+
+        // Create a thread pool with a fixed number of threads
+        ExecutorService executorService = Executors.newFixedThreadPool(currentUser.getPets().size() + 1);
+        List<Thread> threads = new ArrayList<>();
+
+        // Create a separate thread for background aging and health checks
+        Thread getOlderThread =  new Thread(() -> {
+            while (currentUser.getPets().size() != 0) {
+                // Perform background aging for all pets
+                for (Pet pet : currentUser.getPets()) {
+                    pet.getOlder();
+                }
+
+                // Removing deceased pets from list. If pets are deceased, leaving simulation.
+                currentUser.removeDeceasedPets();
+
+                try {
+                    // Sleep for a certain period between each background task
+                    Thread.sleep(10000); // Adjust the sleep duration as needed
+                } catch (InterruptedException e) {
+                    // Handle interruption if required
+                    System.out.println(e.getMessage());
+                }
+            }
+        });
+        executorService.submit(getOlderThread);
+        while (currentUser.getPets().size() != 0) {
+            // Removing deceased pets from list. If pets are deceased, leaving simulation.
+            currentUser.removeDeceasedPets();
+            if (currentUser.getPets().size() == 0) {
+                // Shut down the executor service gracefully
+                executorService.shutdown();
+                break;
+            }
+            // printing pet info for user to choose from.
+            for (int i = 0; i < currentUser.getPets().size(); i++) {
+                    System.out.println((i + 1) + ": " + currentUser.getPets().get(i));
+            }
+            for (Pet pet : currentUser.getPets()) {
+                String activity = getUserActivity(pet);
+                if (activity.equalsIgnoreCase("exit")) {
+                    executorService.shutdownNow();
+                    return;
+                }
+                Thread thread = new Thread(() -> {
+                    performActivityWithPet(pet, activity);
+                });
+                threads.add(thread);
+            }
+
+            for (Thread currThread : threads) {
+                executorService.submit(currThread);
+            }
+
+            try {
+                Thread.sleep(1000); // Delay between each loop iteration
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            threads.clear();
+        }
+
+        // Shut down the executor service gracefully
+        executorService.shutdown();
+
+            System.out.println("Your pets have all lived their happy lives. Thanks for using SIMPET!");
+            try {
+                System.out.println("Please pick a file name for your pet report card: ");
+                String fileName = inputScanner.nextLine();
+                saveReportCard(currentUser, fileName);
+            } catch (SimpetOutputException e) {
+                System.out.println(e.getMessage());
+            }
+            System.exit(0);
+    }
+
+    private static String getUserActivity(Pet pet) {
+        System.out.println("Enter the activity you want to do with Pet " + pet.getName());
+        System.out.println("Activities: Feed, Play, Train, Sleep, Health Checkup, Exit");
+        String activity = inputScanner.nextLine();
+        while (!isValidActivity(activity)) {
+            System.out.println("Invalid activity. Please enter a valid activity or Exit: ");
+            activity = inputScanner.nextLine();
+        }
+        return activity.toLowerCase();
+    }
+
+    private static boolean isValidActivity(String activity) {
+        return activity.equalsIgnoreCase("feed") ||
+                activity.equalsIgnoreCase("play") ||
+                activity.equalsIgnoreCase("train") ||
+                activity.equalsIgnoreCase("sleep") ||
+                activity.equalsIgnoreCase("health checkup") ||
+                activity.equalsIgnoreCase("exit");
+    }
+
+    private static void performActivityWithPet(Pet pet, String activity) {
+        if (activity.equalsIgnoreCase("feed")) {
+            pet.feed();
+        } else if (activity.equalsIgnoreCase("play")) {
+            pet.play();
+        } else if (activity.equalsIgnoreCase("train")) {
+            if (pet instanceof Dog) {
+                Dog dogPet = (Dog) pet;
+                dogPet.train();
+            } else {
+                System.out.println("You try to train " + pet.getName() + ", but they don't listen.");
+            }
+        } else if (activity.equalsIgnoreCase("sleep")) {
+            pet.sleep();
+        } else if (activity.equalsIgnoreCase("health checkup")) {
+            HealthCheck<Pet> healthCheck = new HealthCheck<>();
+            healthCheck.performCheckup(pet);
+        }
     }
 
     /**
@@ -304,12 +294,12 @@ public class PetSimulation {
         interactWithPets();
 
         // Save pets objects to bin file for later use.
-        System.out.println("Saving your pet info to savedPets.bin file: ");
-        try {
-            savePets(currentUser, binFileName);
-        } catch (SimpetOutputException e) {
-            System.out.println(e.getMessage());
-        }
+//        System.out.println("Saving your pet info to savedPets.bin file: ");
+//        try {
+//            savePets(currentUser, binFileName);
+//        } catch (SimpetOutputException e) {
+//            System.out.println(e.getMessage());
+//        }
 
         // Save summary in external file and exit program.
         System.out.println("Thanks for using SIMPET!");

@@ -42,11 +42,10 @@ public class Dog extends Pet implements Serializable {
      * Activity specific to dog pets.
      * Improves pet mood and prints a message to screen.
      *
-     * @param trick the type of trick the user wants to train
      */
-    public void train(String trick) {
+    public void train() {
         // postcondition: The dog's mood is improved.
-        System.out.println(name + " is learning to " + trick + ".");
+        System.out.println(name + " is learning a new trick.");
         mood += 10;
     }
 

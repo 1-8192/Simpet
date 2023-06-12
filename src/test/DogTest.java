@@ -30,7 +30,7 @@ public class DogTest {
 
     @Test
     public void testTrain() {
-        dog.train("sit");
+        dog.train();
         assertEquals(110, dog.getMood());
     }
 
