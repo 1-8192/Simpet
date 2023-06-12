@@ -113,37 +113,9 @@ public class PetSimulation {
     public static void interactWithPets() {
         // postcondition: The user interacts with their pets, and the pets' mood, age, etc. are affected.
 
-        // Create a thread pool with a fixed number of threads
-        ExecutorService executorService = Executors.newFixedThreadPool(threadPoolCount);
-
-        // Create a separate thread for background aging and health checks
-        executorService.submit(() -> {
-            while (true) {
-                // Perform background aging for all pets
-                for (Pet pet : currentUser.getPets()) {
-                    pet.getOlder();
-                }
-
-                // Perform background health checks for all pets
-                for (Pet pet : currentUser.getPets()) {
-                    HealthCheck<Pet> healthCheck = new HealthCheck<>();
-                    healthCheck.performCheckup(pet);
-                }
-
-                try {
-                    // Sleep for a certain period between each background task
-                    Thread.sleep(5000); // Adjust the sleep duration as needed
-                } catch (InterruptedException e) {
-                    // Handle interruption if required
-                    System.out.println(e.getMessage());
-                }
-            }
-        });
+        ExecutorService executorService = Executors.newCachedThreadPool();
 
         while (true) {
-            System.out.print("Which pet would you like to interact with? \n");
-
-            // Removing deceased pets from list. If pets are deceased, leaving simulation.
             currentUser.removeDeceasedPets();
             if (currentUser.getPets().size() == 0) {
                 System.out.println("Your pets have all lived their happy lives. Thanks for using SIMPET!");
@@ -157,89 +129,155 @@ public class PetSimulation {
                 System.exit(0);
             }
 
-            // printing pet info for user to choose from.
-            for (int i = 0; i < currentUser.getPets().size(); i++) {
-                    System.out.println((i + 1) + ": " + currentUser.getPets().get(i));
-            }
-            System.out.println("Enter pet number or type Exit: ");
-            String input = inputScanner.nextLine();
-
-            // Main prompt loop.
-            if (input.equalsIgnoreCase("exit")) {
-                break;
-            } else {
-                try {
-                    int petIndex = Integer.parseInt(input) - 1;
-                    if (petIndex < 0 || petIndex >= currentUser.getPets().size()) {
-                        System.out.println("Invalid input. Please enter a valid pet number or Exit.");
-                        continue;
-                    }
-
-                    Pet pet = currentUser.getPets().get(petIndex);
-                    System.out.print("How would you like to interact with " + pet.getName() +
-                            "? (Feed/Play/Train/Sleep/Clean litter box/health checkup): ");
-                    String action = inputScanner.nextLine();
-
-                    if (action.equalsIgnoreCase("feed")) {
-                        // Polymorphism example
+            for (Pet pet : currentUser.getPets()) {
+                executorService.execute(() -> {
+                    while (pet.getHealth() > 0) {
+                        System.out.println("Pet " + pet.getName() + " is being fed");
                         pet.feed();
-                    } else if (action.equalsIgnoreCase("play")) {
-                        pet.play();
-                    } else if (action.equalsIgnoreCase("train")) {
-                        System.out.print("What trick would you like to train " + pet.getName() + " to do? ");
-                        String trick = inputScanner.nextLine();
-                        // Downcasting example
-                        if (pet instanceof Dog) {
-                            Dog dogPet = (Dog) pet;
-                            dogPet.train(trick);
-                        } else {
-                            System.out.println("You try to train " + pet.getName() + ", but they don't listen.");
-                        }
-                    } else if (action.equalsIgnoreCase("clean litter box")) {
-                        // Downcasting example
-                        if (pet instanceof Cat) {
-                            Cat catPet = (Cat) pet;
-                            catPet.cleanLitterBox();
-                        } else {
-                            System.out.println(pet.getName() + " does not have a litter box. " +
-                                    "Try taking them outside.");
-                        }
-                    } else if (action.equalsIgnoreCase("sleep")) {
-                        // Polymorphism example
-                        pet.sleep();
-                    } else if (action.equalsIgnoreCase("health checkup")) {
-                        // Use of generic class
-                        HealthCheck<Pet> healthCheck = new HealthCheck<>();
-                        healthCheck.performCheckup(pet);
-                    } else {
-                        System.out.println("Invalid input. Please enter Feed, Play, Train, Sleep, health checkup " +
-                                "or Exit.");
+                        pet.getOlder();
+                        System.out.println("Pet " + pet.getName() + " completed an activity. Summary:");
+                        System.out.println(pet);
                     }
-                } catch (NumberFormatException e) {
-                    System.out.println("Invalid input. Please enter a valid pet number or Exit.");
-                }
-
-                try {
-                    int petIndex = Integer.parseInt(input) - 1;
-                    if (petIndex < 0 || petIndex >= currentUser.getPets().size()) {
-                        // ...
-                    }
-
-                    Pet pet = currentUser.getPets().get(petIndex);
-
-                    // Submit the pet interaction task to the executor service
-                    executorService.submit(() -> {
-                        // Pet interaction code remains the same as before
-                        // ...
-                    });
-                } catch (NumberFormatException e) {
-                    // ...
-                }
+                });
             }
 
-            // Shut down the executor service gracefully
-            executorService.shutdown();
+            try {
+                Thread.sleep(1000); // Delay between each loop iteration
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+
+
+
+
+//        // Create a thread pool with a fixed number of threads
+//        ExecutorService executorService = Executors.newFixedThreadPool(threadPoolCount);
+//
+//        // Create a separate thread for background aging and health checks
+//        executorService.submit(() -> {
+//            while (true) {
+//                // Perform background aging for all pets
+//                for (Pet pet : currentUser.getPets()) {
+//                    pet.getOlder();
+//                }
+//
+//                // Perform background health checks for all pets
+//                for (Pet pet : currentUser.getPets()) {
+//                    HealthCheck<Pet> healthCheck = new HealthCheck<>();
+//                    healthCheck.performCheckup(pet);
+//                }
+//
+//                try {
+//                    // Sleep for a certain period between each background task
+//                    Thread.sleep(5000); // Adjust the sleep duration as needed
+//                } catch (InterruptedException e) {
+//                    // Handle interruption if required
+//                    System.out.println(e.getMessage());
+//                }
+//            }
+//        });
+//
+//        while (true) {
+//            System.out.print("Which pet would you like to interact with? \n");
+//
+//            // Removing deceased pets from list. If pets are deceased, leaving simulation.
+//            currentUser.removeDeceasedPets();
+//            if (currentUser.getPets().size() == 0) {
+//                System.out.println("Your pets have all lived their happy lives. Thanks for using SIMPET!");
+//                try {
+//                    System.out.println("Please pick a file name for your pet report card: ");
+//                    String fileName = inputScanner.nextLine();
+//                    saveReportCard(currentUser, fileName);
+//                } catch (SimpetOutputException e) {
+//                    System.out.println(e.getMessage());
+//                }
+//                System.exit(0);
+//            }
+//
+//            // printing pet info for user to choose from.
+//            for (int i = 0; i < currentUser.getPets().size(); i++) {
+//                    System.out.println((i + 1) + ": " + currentUser.getPets().get(i));
+//            }
+//            System.out.println("Enter pet number or type Exit: ");
+//            String input = inputScanner.nextLine();
+//
+//            // Main prompt loop.
+//            if (input.equalsIgnoreCase("exit")) {
+//                break;
+//            } else {
+//                try {
+//                    int petIndex = Integer.parseInt(input) - 1;
+//                    if (petIndex < 0 || petIndex >= currentUser.getPets().size()) {
+//                        System.out.println("Invalid input. Please enter a valid pet number or Exit.");
+//                        continue;
+//                    }
+//
+//                    Pet pet = currentUser.getPets().get(petIndex);
+//                    System.out.print("How would you like to interact with " + pet.getName() +
+//                            "? (Feed/Play/Train/Sleep/Clean litter box/health checkup): ");
+//                    String action = inputScanner.nextLine();
+//
+//                    if (action.equalsIgnoreCase("feed")) {
+//                        // Polymorphism example
+//                        pet.feed();
+//                    } else if (action.equalsIgnoreCase("play")) {
+//                        pet.play();
+//                    } else if (action.equalsIgnoreCase("train")) {
+//                        System.out.print("What trick would you like to train " + pet.getName() + " to do? ");
+//                        String trick = inputScanner.nextLine();
+//                        // Downcasting example
+//                        if (pet instanceof Dog) {
+//                            Dog dogPet = (Dog) pet;
+//                            dogPet.train(trick);
+//                        } else {
+//                            System.out.println("You try to train " + pet.getName() + ", but they don't listen.");
+//                        }
+//                    } else if (action.equalsIgnoreCase("clean litter box")) {
+//                        // Downcasting example
+//                        if (pet instanceof Cat) {
+//                            Cat catPet = (Cat) pet;
+//                            catPet.cleanLitterBox();
+//                        } else {
+//                            System.out.println(pet.getName() + " does not have a litter box. " +
+//                                    "Try taking them outside.");
+//                        }
+//                    } else if (action.equalsIgnoreCase("sleep")) {
+//                        // Polymorphism example
+//                        pet.sleep();
+//                    } else if (action.equalsIgnoreCase("health checkup")) {
+//                        // Use of generic class
+//                        HealthCheck<Pet> healthCheck = new HealthCheck<>();
+//                        healthCheck.performCheckup(pet);
+//                    } else {
+//                        System.out.println("Invalid input. Please enter Feed, Play, Train, Sleep, health checkup " +
+//                                "or Exit.");
+//                    }
+//                } catch (NumberFormatException e) {
+//                    System.out.println("Invalid input. Please enter a valid pet number or Exit.");
+//                }
+//
+//                try {
+//                    int petIndex = Integer.parseInt(input) - 1;
+//                    if (petIndex < 0 || petIndex >= currentUser.getPets().size()) {
+//                        // ...
+//                    }
+//
+//                    Pet pet = currentUser.getPets().get(petIndex);
+//
+//                    // Submit the pet interaction task to the executor service
+//                    executorService.submit(() -> {
+//                        // Pet interaction code remains the same as before
+//                        // ...
+//                    });
+//                } catch (NumberFormatException e) {
+//                    // ...
+//                }
+//            }
+//
+//            // Shut down the executor service gracefully
+//            executorService.shutdown();
+//        }
     }
 
     /**
