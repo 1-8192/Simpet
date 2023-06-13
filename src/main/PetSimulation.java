@@ -52,6 +52,27 @@ public class PetSimulation {
     }
 
     /**
+     * Helper method to get a desired activity from the user.
+     *
+     * @param pet the pwt being interacted with.
+     *
+     * @return string for the activity.
+     */
+    private static String getUserActivity(Pet pet) {
+        // precondition: pet provided.
+        // post condition: the string name for the activity is confirmed and returned.
+
+        System.out.println("Enter the activity you want to do with Pet " + pet.getName());
+        System.out.println("Activities: Feed, Play, Train, Sleep, Health Checkup, Exit");
+        String activity = inputScanner.nextLine();
+        while (!isValidActivity(activity)) {
+            System.out.println("Invalid activity. Please enter a valid activity or Exit: ");
+            activity = inputScanner.nextLine();
+        }
+        return activity.toLowerCase();
+    }
+
+    /**
      * Function to ask the user for a name to initialize the user. Public for testing.
      */
     public static void initializeUser() {
@@ -204,17 +225,6 @@ public class PetSimulation {
         executorService.shutdown();
 
         endSimulation();
-    }
-
-    private static String getUserActivity(Pet pet) {
-        System.out.println("Enter the activity you want to do with Pet " + pet.getName());
-        System.out.println("Activities: Feed, Play, Train, Sleep, Health Checkup, Exit");
-        String activity = inputScanner.nextLine();
-        while (!isValidActivity(activity)) {
-            System.out.println("Invalid activity. Please enter a valid activity or Exit: ");
-            activity = inputScanner.nextLine();
-        }
-        return activity.toLowerCase();
     }
 
     private static boolean isValidActivity(String activity) {
