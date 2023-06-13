@@ -507,5 +507,104 @@ PetStatistics<Pet> petStatistics = new PetStatistics<>(petList);
 }
 `
 
+Prompt:
+Can you change the code from the latest prompt to instead ask the user with activity they want to do with each pet, 
+then assign that to a thread and have all te activities happen concurrently?
+
+Code Generated:
+`java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class PetSimulation {
+public static void interactWithPets() {
+ExecutorService executorService = Executors.newCachedThreadPool();
+List<Thread> threads = new ArrayList<>();
+
+        while (true) {
+            currentUser.removeDeceasedPets();
+            if (currentUser.getPets().size() == 0) {
+                System.out.println("Your pets have all lived their happy lives. Thanks for using SIMPET!");
+                try {
+                    System.out.println("Please pick a file name for your pet report card: ");
+                    String fileName = inputScanner.nextLine();
+                    saveReportCard(currentUser, fileName);
+                } catch (SimpetOutputException e) {
+                    System.out.println(e.getMessage());
+                }
+                System.exit(0);
+            }
+
+            for (int i = 0; i < currentUser.getPets().size(); i++) {
+                Pet pet = currentUser.getPets().get(i);
+                int petIndex = i + 1;
+                String activity = getUserActivity(petIndex, pet.getName());
+                if (activity.equalsIgnoreCase("exit")) {
+                    executorService.shutdownNow();
+                    return;
+                }
+                Thread thread = new Thread(() -> {
+                    System.out.println("Pet " + pet.getName() + " is performing " + activity + "...");
+                    performActivityWithPet(pet, activity);
+                    pet.getOlder();
+                    System.out.println("Pet " + pet.getName() + " completed " + activity + ". Summary:");
+                    System.out.println(pet.getSummary());
+                });
+                threads.add(thread);
+                executorService.execute(thread);
+            }
+
+            try {
+                Thread.sleep(1000); // Delay between each loop iteration
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static String getUserActivity(int petIndex, String petName) {
+        System.out.println("Enter the activity you want to do with Pet " + petIndex + " (" + petName + "): ");
+        System.out.println("Activities: Feed, Play, Train, Sleep, Health Checkup, Exit");
+        String activity = inputScanner.nextLine();
+        while (!isValidActivity(activity)) {
+            System.out.println("Invalid activity. Please enter a valid activity or Exit: ");
+            activity = inputScanner.nextLine();
+        }
+        return activity.toLowerCase();
+    }
+
+    private static boolean isValidActivity(String activity) {
+        return activity.equalsIgnoreCase("feed") ||
+                activity.equalsIgnoreCase("play") ||
+                activity.equalsIgnoreCase("train") ||
+                activity.equalsIgnoreCase("sleep") ||
+                activity.equalsIgnoreCase("health checkup") ||
+                activity.equalsIgnoreCase("exit");
+    }
+
+    private static void performActivityWithPet(Pet pet, String activity) {
+        if (activity.equalsIgnoreCase("feed")) {
+            pet.feed();
+        } else if (activity.equalsIgnoreCase("play")) {
+            pet.play();
+        } else if (activity.equalsIgnoreCase("train")) {
+            if (pet instanceof Dog) {
+                Dog dogPet = (Dog) pet;
+                System.out.print("What trick would you like to train " + pet.getName() + " to do? ");
+                String trick = inputScanner.nextLine();
+                dogPet.train(trick);
+            } else {
+                System.out.println("You try to train " + pet.getName() + ", but they don't listen.");
+            }
+        } else if (activity.equalsIgnoreCase("sleep")) {
+            pet.sleep();
+        } else if (activity.equalsIgnoreCase("health checkup")) {
+            HealthCheck<Pet> healthCheck = new HealthCheck<>();
+            healthCheck.performCheckup(pet);
+       `
+
+
 As you can see by what is in the actual project code, I had to change a good bit of the above, since it was littered 
 with syntax errors and missing logic. It was still a good starting point though.
