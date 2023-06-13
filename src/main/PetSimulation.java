@@ -227,7 +227,16 @@ public class PetSimulation {
         endSimulation();
     }
 
+    /**
+     * Helper method to check if pet activity is valid.
+     *
+     * @param activity string input.
+     *
+     * @return boolean check whether activity is valid.
+     */
     private static boolean isValidActivity(String activity) {
+        // post-condition: if activity is valid true is returned.
+
         return activity.equalsIgnoreCase("feed") ||
                 activity.equalsIgnoreCase("play") ||
                 activity.equalsIgnoreCase("train") ||
