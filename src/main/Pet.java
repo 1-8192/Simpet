@@ -93,7 +93,7 @@ public abstract class Pet implements Serializable {
      */
     public void getOlder() {
         age += 1;
-        health -= 5;
+        health -= 10;
         if (health <= 0) {
             hasPassed = true;
             System.out.println(name + " has lived a full, meaningful life and has moved on to greener pastures.");

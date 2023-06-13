@@ -35,6 +35,23 @@ public class PetSimulation {
     private static final Integer threadPoolCount = 2;
 
     /**
+     * Method to end the simulation.
+     */
+    private static void endSimulation() {
+        //post-condition: the pet report card is saved and the simulation is over.
+
+        System.out.println("Thanks for using SIMPET!");
+        try {
+            System.out.println("Please pick a file name for your pet report card: ");
+            String fileName = inputScanner.nextLine();
+            saveReportCard(currentUser, fileName);
+        } catch (SimpetOutputException e) {
+            System.out.println(e.getMessage());
+        }
+        System.exit(0);
+    }
+
+    /**
      * Function to ask the user for a name to initialize the user. Public for testing.
      */
     public static void initializeUser() {
@@ -117,49 +134,13 @@ public class PetSimulation {
     public static void interactWithPets() {
         // postcondition: The user interacts with their pets, and the pets' mood, age, etc. are affected.
 
-//        ExecutorService executorService = Executors.newCachedThreadPool();
-//
-//        while (true) {
-//            currentUser.removeDeceasedPets();
-//            if (currentUser.getPets().size() == 0) {
-//                System.out.println("Your pets have all lived their happy lives. Thanks for using SIMPET!");
-//                try {
-//                    System.out.println("Please pick a file name for your pet report card: ");
-//                    String fileName = inputScanner.nextLine();
-//                    saveReportCard(currentUser, fileName);
-//                } catch (SimpetOutputException e) {
-//                    System.out.println(e.getMessage());
-//                }
-//                System.exit(0);
-//            }
-//
-//            for (Pet pet : currentUser.getPets()) {
-//                executorService.execute(() -> {
-//                    while (pet.getHealth() > 0) {
-//                        System.out.println("Pet " + pet.getName() + " is being fed");
-//                        pet.feed();
-//                        pet.getOlder();
-//                        System.out.println("Pet " + pet.getName() + " completed an activity. Summary:");
-//                        System.out.println(pet);
-//                    }
-//                });
-//            }
-//
-//            try {
-//                Thread.sleep(1000); // Delay between each loop iteration
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
-
-
-
-
-        // Create a thread pool with a fixed number of threads
+        // Create a thread pool with a fixed number of threads based on the number of pets + an extra stream
+        // for aging pets.
         ExecutorService executorService = Executors.newFixedThreadPool(currentUser.getPets().size() + 1);
+        // Separate threads we will need.
         List<Thread> threads = new ArrayList<>();
 
-        // Create a separate thread for background aging and health checks
+        // Create a separate thread for background aging, which will take place async from pet interactions.
         Thread getOlderThread =  new Thread(() -> {
             while (currentUser.getPets().size() != 0) {
                 // Perform background aging for all pets
@@ -172,14 +153,17 @@ public class PetSimulation {
 
                 try {
                     // Sleep for a certain period between each background task
-                    Thread.sleep(10000); // Adjust the sleep duration as needed
+                    Thread.sleep(10000);
                 } catch (InterruptedException e) {
                     // Handle interruption if required
                     System.out.println(e.getMessage());
                 }
             }
+            endSimulation();
         });
         executorService.submit(getOlderThread);
+
+        // Main interaction loop where we build threads based on activities for each pet.
         while (currentUser.getPets().size() != 0) {
             // Removing deceased pets from list. If pets are deceased, leaving simulation.
             currentUser.removeDeceasedPets();
@@ -219,15 +203,7 @@ public class PetSimulation {
         // Shut down the executor service gracefully
         executorService.shutdown();
 
-            System.out.println("Your pets have all lived their happy lives. Thanks for using SIMPET!");
-            try {
-                System.out.println("Please pick a file name for your pet report card: ");
-                String fileName = inputScanner.nextLine();
-                saveReportCard(currentUser, fileName);
-            } catch (SimpetOutputException e) {
-                System.out.println(e.getMessage());
-            }
-            System.exit(0);
+        endSimulation();
     }
 
     private static String getUserActivity(Pet pet) {
@@ -248,26 +224,6 @@ public class PetSimulation {
                 activity.equalsIgnoreCase("sleep") ||
                 activity.equalsIgnoreCase("health checkup") ||
                 activity.equalsIgnoreCase("exit");
-    }
-
-    private static void performActivityWithPet(Pet pet, String activity) {
-        if (activity.equalsIgnoreCase("feed")) {
-            pet.feed();
-        } else if (activity.equalsIgnoreCase("play")) {
-            pet.play();
-        } else if (activity.equalsIgnoreCase("train")) {
-            if (pet instanceof Dog) {
-                Dog dogPet = (Dog) pet;
-                dogPet.train();
-            } else {
-                System.out.println("You try to train " + pet.getName() + ", but they don't listen.");
-            }
-        } else if (activity.equalsIgnoreCase("sleep")) {
-            pet.sleep();
-        } else if (activity.equalsIgnoreCase("health checkup")) {
-            HealthCheck<Pet> healthCheck = new HealthCheck<>();
-            healthCheck.performCheckup(pet);
-        }
     }
 
     /**
@@ -293,23 +249,43 @@ public class PetSimulation {
         System.out.println("Let's spend some time with your pets");
         interactWithPets();
 
-        // Save pets objects to bin file for later use.
-//        System.out.println("Saving your pet info to savedPets.bin file: ");
-//        try {
-//            savePets(currentUser, binFileName);
-//        } catch (SimpetOutputException e) {
-//            System.out.println(e.getMessage());
-//        }
-
-        // Save summary in external file and exit program.
-        System.out.println("Thanks for using SIMPET!");
-        System.out.println("Please pick a file name for your pet report card: ");
-        String fileName = inputScanner.nextLine();
+        // Save pets objects to bin file for later use if the user still has some live pets.
+        System.out.println("Saving your pet info to savedPets.bin file: ");
         try {
-            saveReportCard(currentUser, fileName);
+            savePets(currentUser, binFileName);
         } catch (SimpetOutputException e) {
             System.out.println(e.getMessage());
         }
-        System.exit(0);
+
+        // Save summary in external file and exit program.
+        endSimulation();
+    }
+
+    /**
+     * Perm an activity with a pet.
+     *
+     * @param pet      the pet the user will spend time with.
+     * @param activity the activity to do.
+     */
+    private static void performActivityWithPet(Pet pet, String activity) {
+        //post-condition: the activity is performed, and the pet's mood and health change.
+
+        if (activity.equalsIgnoreCase("feed")) {
+            pet.feed();
+        } else if (activity.equalsIgnoreCase("play")) {
+            pet.play();
+        } else if (activity.equalsIgnoreCase("train")) {
+            if (pet instanceof Dog) {
+                Dog dogPet = (Dog) pet;
+                dogPet.train();
+            } else {
+                System.out.println("You try to train " + pet.getName() + ", but they don't listen.");
+            }
+        } else if (activity.equalsIgnoreCase("sleep")) {
+            pet.sleep();
+        } else if (activity.equalsIgnoreCase("health checkup")) {
+            HealthCheck<Pet> healthCheck = new HealthCheck<>();
+            healthCheck.performCheckup(pet);
+        }
     }
 }
