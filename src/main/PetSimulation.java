@@ -3,10 +3,8 @@ package main;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import static main.PetSimIO.*;
 
@@ -30,15 +28,20 @@ public class PetSimulation {
     private static final String binFileName = "savedPets.bin";
 
     /**
-     * thread pool count for concurrent pet aging.
+     * Threadpool used for concurrency.
      */
-    private static final Integer threadPoolCount = 2;
+    private static ExecutorService threadPool;
 
     /**
      * Method to end the simulation.
      */
     private static void endSimulation() {
         //post-condition: the pet report card is saved and the simulation is over.
+
+        // Just in case, we are forcefully shutting down the threadpool here.
+        if (threadPool != null) {
+            threadPool.shutdownNow();
+        }
 
         System.out.println("Thanks for using SIMPET!");
         try {
@@ -152,12 +155,12 @@ public class PetSimulation {
      * Function to interact with the user's pets. User will interact with CLI prompts to engage
      * in different activities with a pet.Public for testing.
      */
-    public static void interactWithPets() {
+    public static void interactWithPets() throws RuntimeException {
         // postcondition: The user interacts with their pets, and the pets' mood, age, etc. are affected.
 
         // Create a thread pool with a fixed number of threads based on the number of pets + an extra stream
         // for aging pets.
-        ExecutorService executorService = Executors.newFixedThreadPool(currentUser.getPets().size() + 1);
+        threadPool = Executors.newFixedThreadPool(currentUser.getPets().size() + 1);
         // Separate threads we will need.
         List<Thread> threads = new ArrayList<>();
 
@@ -172,17 +175,17 @@ public class PetSimulation {
                 // Removing deceased pets from list. If pets are deceased, leaving simulation.
                 currentUser.removeDeceasedPets();
 
+                // Sleep for a certain period between each background task
                 try {
-                    // Sleep for a certain period between each background task
                     Thread.sleep(10000);
                 } catch (InterruptedException e) {
-                    // Handle interruption if required
-                    System.out.println(e.getMessage());
+                    throw new RuntimeException(e);
                 }
             }
+            // If we hit this point, there are no more pets, and we can end the simulation.
             endSimulation();
         });
-        executorService.submit(getOlderThread);
+        threadPool.submit(getOlderThread);
 
         // Main interaction loop where we build threads based on activities for each pet.
         while (currentUser.getPets().size() != 0) {
@@ -190,7 +193,7 @@ public class PetSimulation {
             currentUser.removeDeceasedPets();
             if (currentUser.getPets().size() == 0) {
                 // Shut down the executor service gracefully
-                executorService.shutdown();
+                threadPool.shutdown();
                 break;
             }
             // printing pet info for user to choose from.
@@ -200,7 +203,7 @@ public class PetSimulation {
             for (Pet pet : currentUser.getPets()) {
                 String activity = getUserActivity(pet);
                 if (activity.equalsIgnoreCase("exit")) {
-                    executorService.shutdownNow();
+                    threadPool.shutdownNow();
                     return;
                 }
                 Thread thread = new Thread(() -> {
@@ -209,32 +212,33 @@ public class PetSimulation {
                 threads.add(thread);
             }
 
+            // Adding all the pet activity threads to the threadpool to execute.
             for (Thread currThread : threads) {
-                executorService.submit(currThread);
+                threadPool.submit(currThread);
             }
 
+            // Waiting for next loop iteration to give threads a chance to happen.
             try {
-                Thread.sleep(1000); // Delay between each loop iteration
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
+            // clear threads before the next loop.
             threads.clear();
         }
 
         // Shut down the executor service gracefully
-        executorService.shutdown();
-
-        endSimulation();
+        threadPool.shutdown();
     }
 
     /**
-     * Helper method to check if pet activity is valid.
+     * Helper method to check if pet activity is valid. Public for testing.
      *
      * @param activity string input.
      *
      * @return boolean check whether activity is valid.
      */
-    private static boolean isValidActivity(String activity) {
+    public static boolean isValidActivity(String activity) {
         // post-condition: if activity is valid true is returned.
 
         return activity.equalsIgnoreCase("feed") ||
@@ -266,7 +270,12 @@ public class PetSimulation {
 
         // Interactions with pets.
         System.out.println("Let's spend some time with your pets");
-        interactWithPets();
+        try {
+            interactWithPets();
+        } catch (RuntimeException e) {
+            // we would only be catching thread sleep interruptions here, so just ending the program if that happens.
+            endSimulation();
+        }
 
         // Save pets objects to bin file for later use if the user still has some live pets.
         System.out.println("Saving your pet info to savedPets.bin file: ");
@@ -281,12 +290,12 @@ public class PetSimulation {
     }
 
     /**
-     * Perm an activity with a pet.
+     * Perm an activity with a pet. Public for testing.
      *
      * @param pet      the pet the user will spend time with.
      * @param activity the activity to do.
      */
-    private static void performActivityWithPet(Pet pet, String activity) {
+    public static void performActivityWithPet(Pet pet, String activity) {
         //post-condition: the activity is performed, and the pet's mood and health change.
 
         if (activity.equalsIgnoreCase("feed")) {
