@@ -1,9 +1,0 @@
-Tim today you interacted with: 
-Name: Rover, Breed: terrier, Age: 1, Health: 95, Mood: 100
-Name: Mittens, Age: 1, Health: 95, Mood: 105
-Name: Felix, Age: 1, Health: 95, Mood: 100
-Here are some general statistics for your pets:
-The average pet age was: 1.0
-Your oldest pet(s): Rover and Mittens and Felix
-Your happiest pet(s): Mittens
-Your most common pet type: Cat
