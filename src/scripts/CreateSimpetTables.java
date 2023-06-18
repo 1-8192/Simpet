@@ -2,6 +2,10 @@ package scripts;
 
 import java.sql.*;
 
+/**
+ * Scripts to create the tables needed for the Simpet simulation. Please replace the postgres address and credentials
+ * with you own. If you have a copy of the DB already, no need to run this.
+ */
 public class CreateSimpetTables {
         public static void main(String[] args) {
             String connectionUrl =
@@ -14,7 +18,7 @@ public class CreateSimpetTables {
                 String sql =
                         "CREATE TABLE IF NOT EXISTS appuser" +
                                 "(" +
-                                "    id SERIAL PRIMARY KEY," +
+                                "    appuser_id SERIAL PRIMARY KEY," +
                                 "    username TEXT" +
                                 ")";
                 statement1.executeUpdate(sql);
