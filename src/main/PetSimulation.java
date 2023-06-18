@@ -116,7 +116,7 @@ public class PetSimulation {
 
         if (initialPrompt.equalsIgnoreCase("y")) {
             try {
-                loadPetsFromFile(currentUser, binFileName);
+                loadPetsFromDatabase(currentUser);
                 return;
             } catch (SimpetInputException e) {
                 System.out.println(e.getMessage());

@@ -15,19 +15,15 @@ public class PetDAO {
      *
      * @param name the user's name.
      */
-    public static ResultSet LoadUserPetsFromDB (String name) {
+    public static ResultSet loadUserPetsFromDB (String name) throws SQLException{
         // Post condition: The new pet is saved the DB.
 
         // The id is serial type, and auto generates, so we do not pass in the ID value.
         String sql = "SELECT * FROM Pet WHERE Pet.appuser_id = (SELECT appuser_id FROM appuser WHERE username = ?)";
-        try (Connection connection = DriverManager.getConnection(connectionUrl);
-             PreparedStatement statement1 = connection.prepareStatement(sql);) {
-            statement1.setString(1, name);
-            return statement1.executeQuery();
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Connection connection = DriverManager.getConnection(connectionUrl);
+        PreparedStatement statement1 = connection.prepareStatement(sql);
+        statement1.setString(1, name);
+        return statement1.executeQuery();
     }
 
     /**

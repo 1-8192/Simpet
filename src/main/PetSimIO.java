@@ -3,6 +3,8 @@ package main;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Static helper class to handle I/O functionality for the SimPet Pet Simulation program.
@@ -10,44 +12,28 @@ import java.nio.file.Paths;
 public class PetSimIO {
 
     /**
-     * Loads previously saved Pets from a bin file.
+     * Loads previously saved Pets from the database.
      *
-     * @param fileName the name of the save file to load from.
+     * @param currentUser the current user.
      */
-    public static void loadPetsFromFile(User currentUser, String fileName) throws SimpetInputException {
+    public static void loadPetsFromDatabase(User currentUser) throws SimpetInputException {
         // precondition: user passes in a file name that is a binary file of pet objects.
         // postcondition: if the file is valid and contains pet objects, pets are created.
         // Otherwise, a SimpetInputException is thrown.
-        if (!fileName.endsWith(".bin")) {
-            throw new SimpetInputException("Invalid file format. Only binary files are supported.");
-        }
-
-        if (!Files.exists(Paths.get(fileName))) {
-            throw new SimpetInputException("No saved pets file to read from.");
-        }
-
-        System.out.println("Loading Pets from " + fileName + "...");
-
         try {
-            FileInputStream fileInput = new FileInputStream(fileName);
-            ObjectInputStream inputStream = new ObjectInputStream(fileInput);
+            ResultSet results = PetDAO.loadUserPetsFromDB(currentUser.getUserName());
+            while (results.next()) {
+                String petName = results.getString(1);
+                Integer mood = results.getInt(2);
+                Integer health = results.getInt(3);
+                Boolean hasPassed = results.getBoolean(4);
+                String petType = results.getString(5);
+                if (petType.equals("dog")) {
+                    String breed = results.getString(6);
 
-            while (true) {
-                try {
-                    Pet pet = (Pet) inputStream.readObject();
-                    currentUser.addPet(pet);
-                } catch (EOFException e) {
-                    // End of file reached
-                    break;
                 }
             }
-            inputStream.close();
-            fileInput.close();
-        } catch (FileNotFoundException e) {
-            throw new SimpetInputException(e.getMessage());
-        } catch (ClassNotFoundException e) {
-            throw new SimpetInputException(e.getMessage());
-        } catch (IOException e) {
+        } catch (SQLException e) {
             throw new SimpetInputException(e.getMessage());
         }
     }
