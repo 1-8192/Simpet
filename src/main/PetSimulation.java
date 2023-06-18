@@ -148,10 +148,12 @@ public class PetSimulation {
                 // Upcasting Example
                 Pet newPet = new Dog(petName, dogBreed);
                 currentUser.addPet(newPet);
+                PetDAO.savePetInfo(newPet, currentUser.getUserName());
             } else if (petType.equals("cat")) {
                 // Upcasting Example
                 Pet newPet = new Cat(petName);
                 currentUser.addPet(newPet);
+                PetDAO.savePetInfo(newPet, currentUser.getUserName());
             } else {
                 System.out.println("I'm sorry, you can only adopt a dog or a cat for now.");
             }

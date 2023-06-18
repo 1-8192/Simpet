@@ -24,13 +24,13 @@ public class CreateSimpetTables {
                 statement1.executeUpdate(sql);
                 sql = "CREATE TABLE IF NOT EXISTS Pet (" +
                         "pet_id serial NOT NULL PRIMARY KEY," +
-                        "name text NOT NULL," +
+                        "pet_name text NOT NULL," +
                         "mood int NOT NULL ," +
                         "health int NOT NULL," +
                         "has_passed boolean NOT NULL," +
                         "pet_type text NOT NULL," +
                         "breed text," +
-                        "    appuser_id integer REFERENCES Appuser (appuser_id)" +
+                        "appuser_id integer REFERENCES Appuser (appuser_id)" +
                         ")";
                 statement2.executeUpdate(sql);
             }
