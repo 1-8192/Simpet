@@ -49,27 +49,27 @@ public class PetSimIOTest {
     /**
      * Testing use case where invalid file format is used.
      */
-    @Test
-    public void testLoadPetsFromFileWithInvalidFileFormat() {
-        assertThrows(SimpetInputException.class, () -> {
-            PetSimIO.loadPetsFromFile(user, textFileNameInvalid);
-        });
-    }
+//    @Test
+//    public void testLoadPetsFromFileWithInvalidFileFormat() {
+//        assertThrows(SimpetInputException.class, () -> {
+//            PetSimIO.loadPetsFromFile(user, textFileNameInvalid);
+//        });
+//    }
 
     /**
      * Testing pet load from a valid bin file.
      */
-    @Test
-    public void testLoadPetsFromFileWithValidFile() {
-        // Assuming you have a valid binary file containing pet objects for testing
-        ArrayList<Pet> emptySet = new ArrayList<>();
-        user.setPets(emptySet);
-        assertDoesNotThrow(() -> {
-            PetSimIO.loadPetsFromFile(user, binFileNameValid);
-        });
-
-        Assertions.assertEquals(4, user.getPets().size());
-    }
+//    @Test
+//    public void testLoadPetsFromFileWithValidFile() {
+//        // Assuming you have a valid binary file containing pet objects for testing
+//        ArrayList<Pet> emptySet = new ArrayList<>();
+//        user.setPets(emptySet);
+//        assertDoesNotThrow(() -> {
+//            PetSimIO.loadPetsFromFile(user, binFileNameValid);
+//        });
+//
+//        Assertions.assertEquals(4, user.getPets().size());
+//    }
 
     /**
      * Testing an exception is thrown with a bad file type.

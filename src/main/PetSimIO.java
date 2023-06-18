@@ -23,14 +23,18 @@ public class PetSimIO {
         try {
             ResultSet results = PetDAO.loadUserPetsFromDB(currentUser.getUserName());
             while (results.next()) {
-                String petName = results.getString(1);
-                Integer mood = results.getInt(2);
-                Integer health = results.getInt(3);
-                Boolean hasPassed = results.getBoolean(4);
-                String petType = results.getString(5);
+                String petName = results.getString(2);
+                Integer mood = results.getInt(3);
+                Integer health = results.getInt(4);
+                Boolean hasPassed = results.getBoolean(5);
+                String petType = results.getString(6);
                 if (petType.equals("dog")) {
-                    String breed = results.getString(6);
-
+                    String breed = results.getString(7);
+                    Pet newPet = new Dog(petName, breed, mood, health, hasPassed);
+                    currentUser.addPet(newPet);
+                } else {
+                    Pet newPet = new Cat(petName, mood, health, hasPassed);
+                    currentUser.addPet(newPet);
                 }
             }
         } catch (SQLException e) {

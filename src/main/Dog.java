@@ -21,6 +21,14 @@ public class Dog extends Pet implements Serializable {
         this.breed = breed;
     }
 
+    public Dog(String name, String breed, Integer mood, Integer health, Boolean hasPassed) {
+        super(name);
+        this.breed = breed;
+        this.mood = mood;
+        this. health = health;
+        this.hasPassed = hasPassed;
+    }
+
     /**
      * Getter method for the breed variable
      * @return the dog's breed.
