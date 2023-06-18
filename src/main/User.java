@@ -1,5 +1,6 @@
 package main;
 
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,9 +19,19 @@ public class User {
      */
     private ArrayList<Pet> pets;
 
+    /**
+     * DAO class for persistent storage
+     */
+    private AppUserDAO userDao;
+
     public User(String userName) {
         this.userName = userName;
         this.pets = new ArrayList<>();
+        this.userDao = new AppUserDAO();
+    }
+
+    public boolean checkIfUserExists () {
+        return this.userDao.checkIfUserExists(this.userName);
     }
 
     /**
@@ -55,6 +66,15 @@ public class User {
         List<Pet> petList = this.pets.stream()
                 .filter(pet -> !pet.getHasPassed()).collect(Collectors.toList());
         this.pets = (ArrayList<Pet>) petList;
+    }
+
+    /**
+     * Save the current user to the DB.
+     *
+     */
+    public void saveUserInfo () {
+        // Post condition: The new user is saved to the DB.
+        this.userDao.saveUserInfo(this.userName);
     }
 
     /**

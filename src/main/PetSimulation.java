@@ -79,7 +79,8 @@ public class PetSimulation {
      * Function to ask the user for a name to initialize the user. Public for testing.
      */
     public static void initializeUser() {
-        // postcondition: A user instance is created for the user using the provided name.
+        // postcondition: A user instance is created for the user using the provided name. If the user is new, their
+        // info is saved to the DB.
 
         String userName = "";
 
@@ -87,9 +88,15 @@ public class PetSimulation {
             System.out.println("Please enter your name: ");
             userName = inputScanner.nextLine();
             currentUser = new User(userName);
-        }
 
-        System.out.println("Welcome " + currentUser.getUserName());
+            if (currentUser.checkIfUserExists()) {
+                System.out.println("Welcome back, " + currentUser.getUserName() + "!");
+            } else {
+                currentUser.saveUserInfo();
+                System.out.println("Great to meet you,  " + currentUser.getUserName() + ". We have saved your info" +
+                        " for future sessions.");
+            }
+        }
     }
 
     /**
