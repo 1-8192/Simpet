@@ -112,7 +112,7 @@ public class PetSimulation {
         String initialPrompt;
         String continuePrompt = "y";
 
-        System.out.println("Would you like to load existing pets from a save file? [y/n]");
+        System.out.println("Would you like to load existing pets from the database? [y/n]");
         initialPrompt = inputScanner.nextLine();
 
         if (initialPrompt.equalsIgnoreCase("y")) {
