@@ -1,5 +1,6 @@
 package main;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -116,11 +117,20 @@ public class PetSimulation {
 
         if (initialPrompt.equalsIgnoreCase("y")) {
             try {
-                loadPetsFromDatabase(currentUser);
-                return;
+                Integer petCount = PetDAO.checkUserPetsInDatabase(currentUser.getUserName());
+                if (petCount > 0) {
+                    System.out.println("You have " + petCount + " pets. Loading now...");
+                    loadPetsFromDatabase(currentUser);
+                    return;
+                } else {
+                    System.out.println("You do not have any pets saved." +
+                            "Please adopt some pets manually by following the prompts below.");
+                }
             } catch (SimpetInputException e) {
                 System.out.println(e.getMessage());
                 System.out.println("Please adopt some pets manually by following the prompts below.");
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
         } else {
             System.out.println("Please adopt some pets manually by following the prompts below.");

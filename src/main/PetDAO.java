@@ -11,6 +11,27 @@ public class PetDAO {
             + "password=Gwyn1/8192";
 
     /**
+     * Checks if the user has saved pets.
+     *
+     * @param name the user's name.
+     */
+    public static Integer checkUserPetsInDatabase (String name) throws SQLException{
+        // Post condition: The new pet is saved the DB.
+
+        // Using an aggregate COUNT() function.
+        String sql = "SELECT COUNT(pet_id) as count FROM Pet WHERE Pet.appuser_id = " +
+                "(SELECT appuser_id FROM appuser WHERE username = ?)";
+        Connection connection = DriverManager.getConnection(connectionUrl);
+        PreparedStatement statement1 = connection.prepareStatement(sql);
+        statement1.setString(1, name);
+        ResultSet results = statement1.executeQuery();
+        while (results.next()) {
+            return results.getInt("count");
+        }
+        return 0;
+    }
+
+    /**
      * Load pets from the DB associated with the user.
      *
      * @param name the user's name.
