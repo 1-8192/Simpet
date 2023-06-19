@@ -61,7 +61,7 @@ public class PetDAO {
 
         // Using a select here to grab the user id so we don't have to load that in a separate query.
         String sql = "SELECT * FROM Pet WHERE Pet.appuser_id = (SELECT appuser_id FROM appuser WHERE username = ?)" +
-                "AND Pet.has_passed = FALSE";
+                "AND Pet.has_passed = FALSE ORDER BY pet_type";
         Connection connection = DriverManager.getConnection(connectionUrl);
         PreparedStatement statement1 = connection.prepareStatement(sql);
         statement1.setString(1, name);
