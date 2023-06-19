@@ -26,26 +26,43 @@ public class PetDAO {
         String sql = "SELECT COUNT(pet_id) as count FROM Pet WHERE Pet.appuser_id = " +
                 "(SELECT appuser_id FROM appuser WHERE username = ?)";
         Connection connection = DriverManager.getConnection(connectionUrl);
-        PreparedStatement statement1 = connection.prepareStatement(sql);
-        statement1.setString(1, name);
-        ResultSet results = statement1.executeQuery();
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, name);
+        ResultSet results = statement.executeQuery();
         while (results.next()) {
             return results.getInt("count");
         }
         return 0;
     }
 
+    public static void getMostActiveUsers () {
+        // Post condition: The new pet is saved the DB.
+        ResultSet results = null;
+        // Using an aggregate COUNT() function, GROUP BY, ORDER BY, and selecting from multiple tables.
+        String sql = "SELECT username, COUNT(pet_id) FROM appuser a JOIN Pet p ON a.appuser_id = p.appuser_id " +
+                "GROUP BY username ORDER BY COUNT(pet_id) DESC";
+        try(Connection connection = DriverManager.getConnection(connectionUrl);
+        PreparedStatement statement = connection.prepareStatement(sql);) {
+            results = statement.executeQuery();
+            while (results.next()) {
+                System.out.println(results.getString(1) + ": has " + results.getInt(2) +
+                        " pets.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void goodbyePet(Pet pet) {
-        // precondition: user passes in a file name that is a binary file
-        // postcondition: if the file name is valid binary format, the pet report card is written.
-        // Otherwise, a SimpetOutputException is thrown.
+        // precondition: pass in a pet instance that has passed on.
+        // postcondition: we update the has_passed field in the database.
 
         String sql = "UPDATE Pet SET has_passed = ? WHERE Pet.pet_name = ?";
         try (Connection connection = DriverManager.getConnection(connectionUrl);
-             PreparedStatement statement1 = connection.prepareStatement(sql);) {
-            statement1.setBoolean(1, true);
-            statement1.setString(2, pet.getName());
-            statement1.execute();
+             PreparedStatement statement = connection.prepareStatement(sql);) {
+            statement.setBoolean(1, true);
+            statement.setString(2, pet.getName());
+            statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -63,9 +80,9 @@ public class PetDAO {
         String sql = "SELECT * FROM Pet WHERE Pet.appuser_id = (SELECT appuser_id FROM appuser WHERE username = ?)" +
                 "AND Pet.has_passed = FALSE ORDER BY pet_type";
         Connection connection = DriverManager.getConnection(connectionUrl);
-        PreparedStatement statement1 = connection.prepareStatement(sql);
-        statement1.setString(1, name);
-        return statement1.executeQuery();
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, name);
+        return statement.executeQuery();
     }
 
     /**
@@ -82,20 +99,20 @@ public class PetDAO {
                 // Using a select here to grab the user id so we don't have to load that in a separate query.
                 "values (?, ?, ?, ?, ?, ?, (SELECT appuser_id FROM appuser WHERE username = ?))";
         try (Connection connection = DriverManager.getConnection(connectionUrl);
-             PreparedStatement statement1 = connection.prepareStatement(sql);) {
-            statement1.setString(1, pet.getName());
-            statement1.setInt(2, pet.getMood());
-            statement1.setInt(3, pet.getHealth());
-            statement1.setBoolean(4, pet.getHasPassed());
+             PreparedStatement statement = connection.prepareStatement(sql);) {
+            statement.setString(1, pet.getName());
+            statement.setInt(2, pet.getMood());
+            statement.setInt(3, pet.getHealth());
+            statement.setBoolean(4, pet.getHasPassed());
             if (pet instanceof Dog) {
-                statement1.setString(5, "dog");
-                statement1.setString(6, ((Dog) pet).getBreed());
+                statement.setString(5, "dog");
+                statement.setString(6, ((Dog) pet).getBreed());
             } else {
-                statement1.setString(5, "cat");
-                statement1.setNull(6, 0);
+                statement.setString(5, "cat");
+                statement.setNull(6, 0);
             }
-            statement1.setString(7, name);
-            statement1.execute();
+            statement.setString(7, name);
+            statement.execute();
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -109,14 +126,14 @@ public class PetDAO {
 
         String sql = "UPDATE Pet SET mood = ?, health = ?, has_passed = ? WHERE Pet.pet_name = ?";
         try (Connection connection = DriverManager.getConnection(connectionUrl);
-             PreparedStatement statement1 = connection.prepareStatement(sql);) {
+             PreparedStatement statement = connection.prepareStatement(sql);) {
 
             for (Pet pet : pets) {
-                statement1.setInt(1, pet.getMood());
-                statement1.setInt(2, pet.getHealth());
-                statement1.setBoolean(3, pet.getHasPassed());
-                statement1.setString(4, pet.getName());
-                statement1.execute();
+                statement.setInt(1, pet.getMood());
+                statement.setInt(2, pet.getHealth());
+                statement.setBoolean(3, pet.getHasPassed());
+                statement.setString(4, pet.getName());
+                statement.execute();
             }
 
         } catch (SQLException e) {

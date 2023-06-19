@@ -1,5 +1,6 @@
 package main;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -254,10 +255,12 @@ public class PetSimulation {
      *
      * @param args Standard Java Main class args
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         // Welcome message and then user and pet initialization.
         System.out.println("Hello, welcome to SIMPET. Please follow the prompts to adopt pets and interact " +
                 "with them.");
+        System.out.println("Our Most active users are:");
+        PetDAO.getMostActiveUsers();
         initializeUser();
         initializePets();
 

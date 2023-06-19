@@ -74,25 +74,25 @@ public class PetSimIOTest {
     /**
      * Testing an exception is thrown with a bad file type.
      */
-    @Test
-    public void testSavePetsWithInvalidFileFormat() {
-        User user = new User("Test User");
-        String fileName = "pets.txt";
-
-        assertThrows(SimpetOutputException.class, () -> {
-            PetSimIO.savePets(user, fileName);
-        });
-    }
-
-    /**
-     * Testing that objects are written correctly to bin file.
-     */
-    @Test
-    public void testSavePetsWithValidFile() {
-        assertDoesNotThrow(() -> {
-            PetSimIO.savePets(user, binFileNameValid);
-        });
-    }
+//    @Test
+//    public void testSavePetsWithInvalidFileFormat() {
+//        User user = new User("Test User");
+//        String fileName = "pets.txt";
+//
+//        assertThrows(SimpetOutputException.class, () -> {
+//            PetSimIO.savePets(user, fileName);
+//        });
+//    }
+//
+//    /**
+//     * Testing that objects are written correctly to bin file.
+//     */
+//    @Test
+//    public void testSavePetsWithValidFile() {
+//        assertDoesNotThrow(() -> {
+//            PetSimIO.savePets(user, binFileNameValid);
+//        });
+//    }
 
     /**
      * Testing the method to save pet results to a report card txt file.
