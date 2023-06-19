@@ -121,7 +121,6 @@ public class PetSimulation {
                 if (petCount > 0) {
                     System.out.println("You have " + petCount + " pets. Loading now...");
                     loadPetsFromDatabase(currentUser);
-                    return;
                 } else {
                     System.out.println("You do not have any pets saved." +
                             "Please adopt some pets manually by following the prompts below.");
@@ -174,14 +173,12 @@ public class PetSimulation {
      * Function to interact with the user's pets. User will interact with CLI prompts to engage
      * in different activities with a pet.Public for testing.
      */
-    public static void interactWithPets() throws RuntimeException {
+    public static void interactWithPets() throws RuntimeException, SimpetOutputException {
         // postcondition: The user interacts with their pets, and the pets' mood, age, etc. are affected.
 
         // Create a thread pool with a fixed number of threads based on the number of pets + an extra stream
         // for aging pets.
-        threadPool = Executors.newFixedThreadPool(currentUser.getPets().size() + 1);
-        // Separate threads we will need.
-        List<Thread> threads = new ArrayList<>();
+        threadPool = Executors.newFixedThreadPool(1);
 
         // Create a separate thread for background aging, which will take place async from pet interactions.
         Thread getOlderThread =  new Thread(() -> {
@@ -225,25 +222,9 @@ public class PetSimulation {
                     threadPool.shutdownNow();
                     return;
                 }
-                Thread thread = new Thread(() -> {
-                    performActivityWithPet(pet, activity);
-                });
-                threads.add(thread);
+                performActivityWithPet(pet, activity);
             }
-
-            // Adding all the pet activity threads to the threadpool to execute.
-            for (Thread currThread : threads) {
-                threadPool.submit(currThread);
-            }
-
-            // Waiting for next loop iteration to give threads a chance to happen.
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            // clear threads before the next loop.
-            threads.clear();
+            PetDAO.updateUserPetInfo(currentUser.getPets());
         }
 
         // Shut down the executor service gracefully
@@ -291,17 +272,9 @@ public class PetSimulation {
         System.out.println("Let's spend some time with your pets");
         try {
             interactWithPets();
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             // we would only be catching thread sleep interruptions here, so just ending the program if that happens.
             endSimulation();
-        }
-
-        // Save pets objects to bin file for later use if the user still has some live pets.
-        System.out.println("Saving your pet info to savedPets.bin file: ");
-        try {
-            savePets(currentUser, binFileName);
-        } catch (SimpetOutputException e) {
-            System.out.println(e.getMessage());
         }
 
         // Save summary in external file and exit program.

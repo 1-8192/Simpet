@@ -43,38 +43,6 @@ public class PetSimIO {
     }
 
     /**
-     * Method to save the user's pets to a binary file for later.
-     *
-     * @param fileName the name of the report card file.
-     */
-    public static void savePets(User currentUser, String fileName) throws SimpetOutputException {
-        // precondition: user passes in a file name that is a binary file
-        // postcondition: if the file name is valid binary format, the pet report card is written.
-        // Otherwise, a SimpetOutputException is thrown.
-        if (!fileName.endsWith(".bin")) {
-            throw new SimpetOutputException("Invalid file format. Only .bin files are supported.");
-        }
-
-        try {
-            // For this case we are saving at the end of a session for the following session, so we always want
-            // to overwrite the file even if it already exists.
-            FileOutputStream fileOutputStream = new FileOutputStream(fileName, false);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-
-            for (Pet pet : currentUser.getPets()) {
-                objectOutputStream.writeObject(pet);
-                System.out.println(pet);
-            }
-
-            objectOutputStream.close();
-            fileOutputStream.close();
-            System.out.println("Pet information has been saved to " + fileName);
-        } catch (IOException e) {
-            throw new SimpetOutputException(e.getMessage());
-        }
-    }
-
-    /**
      * Method to print results of SIMPET session to a report card external file. Public for testing.
      *
      * @param fileName the name of the report card file.

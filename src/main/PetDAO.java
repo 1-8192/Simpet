@@ -1,6 +1,10 @@
 package main;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.sql.*;
+import java.util.List;
 
 public class PetDAO {
     /**
@@ -78,6 +82,28 @@ public class PetDAO {
             statement1.execute();
         }
         catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateUserPetInfo(List<Pet> pets) throws SimpetOutputException {
+        // precondition: user passes in a file name that is a binary file
+        // postcondition: if the file name is valid binary format, the pet report card is written.
+        // Otherwise, a SimpetOutputException is thrown.
+
+        String sql = "UPDATE Pet SET mood = ?, health = ?, has_passed = ? WHERE Pet.pet_name = ?";
+        try (Connection connection = DriverManager.getConnection(connectionUrl);
+             PreparedStatement statement1 = connection.prepareStatement(sql);) {
+
+            for (Pet pet : pets) {
+                statement1.setInt(1, pet.getMood());
+                statement1.setInt(2, pet.getHealth());
+                statement1.setBoolean(3, pet.getHasPassed());
+                statement1.setString(4, pet.getName());
+                statement1.execute();
+            }
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
