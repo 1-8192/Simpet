@@ -35,6 +35,22 @@ public class PetDAO {
         return 0;
     }
 
+    public static void goodbyePet(Pet pet) {
+        // precondition: user passes in a file name that is a binary file
+        // postcondition: if the file name is valid binary format, the pet report card is written.
+        // Otherwise, a SimpetOutputException is thrown.
+
+        String sql = "UPDATE Pet SET has_passed = ? WHERE Pet.pet_name = ?";
+        try (Connection connection = DriverManager.getConnection(connectionUrl);
+             PreparedStatement statement1 = connection.prepareStatement(sql);) {
+            statement1.setBoolean(1, true);
+            statement1.setString(2, pet.getName());
+            statement1.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Load pets from the DB associated with the user.
      *

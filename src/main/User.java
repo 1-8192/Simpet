@@ -63,6 +63,11 @@ public class User {
      * Removing deceased pets from user's pet list and setting the user's pets to live pets.
      */
     public void removeDeceasedPets() {
+        for (Pet pet : this.pets) {
+            if (pet.hasPassed) {
+                PetDAO.goodbyePet(pet);
+            }
+        }
         List<Pet> petList = this.pets.stream()
                 .filter(pet -> !pet.getHasPassed()).collect(Collectors.toList());
         this.pets = (ArrayList<Pet>) petList;
