@@ -2,8 +2,6 @@ package main;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -25,11 +23,6 @@ public class PetSimulation {
     private static final Scanner inputScanner = new Scanner(System.in);
 
     /**
-     * The bin file where pet objects are saved.
-     */
-    private static final String binFileName = "savedPets.bin";
-
-    /**
      * Threadpool used for concurrency.
      */
     private static ExecutorService threadPool;
@@ -47,6 +40,7 @@ public class PetSimulation {
 
         System.out.println("Thanks for using SIMPET!");
         try {
+            System.out.println("We have saved your pet's information to the database.");
             System.out.println("Please pick a file name for your pet report card: ");
             String fileName = inputScanner.nextLine();
             saveReportCard(currentUser, fileName);
@@ -105,8 +99,8 @@ public class PetSimulation {
      * Function to ask the user for pets they want to adopt.
      */
     private static void initializePets() {
-        // postcondition: The user has pets created and assigned to their user instance, either through an
-        // input CSV file or by following CLI pompts.
+        // postcondition: The user has pets created and assigned to their user instance, either through aa lod from the
+        // database and/or manual inputs.
 
         String petName = "";
         String petType = "";
@@ -174,7 +168,7 @@ public class PetSimulation {
      * Function to interact with the user's pets. User will interact with CLI prompts to engage
      * in different activities with a pet.Public for testing.
      */
-    public static void interactWithPets() throws RuntimeException, SimpetOutputException {
+    public static void interactWithPets() throws RuntimeException {
         // postcondition: The user interacts with their pets, and the pets' mood, age, etc. are affected.
 
         // Create a thread pool with a fixed number of threads based on the number of pets + an extra stream
@@ -256,9 +250,8 @@ public class PetSimulation {
      * @param currentUser the current user.
      */
     public static void loadPetsFromDatabase(User currentUser) throws SimpetInputException {
-        // precondition: user passes in a file name that is a binary file of pet objects.
-        // postcondition: if the file is valid and contains pet objects, pets are created.
-        // Otherwise, a SimpetInputException is thrown.
+        // postcondition: User's existing pets in the database are loaded and set to the user's pet list.
+
         try {
             ResultSet results = PetDAO.loadUserPetsFromDB(currentUser.getUserName());
             while (results.next()) {

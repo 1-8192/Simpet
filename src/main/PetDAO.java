@@ -17,7 +17,7 @@ public class PetDAO {
      * @param name the user's name.
      */
     public static Integer checkUserPetsInDatabase (String name) throws SQLException{
-        // Post condition: The new pet is saved the DB.
+        // Post condition: The number of pets the user has is returned.
 
         // Using an aggregate COUNT() function.
         String sql = "SELECT COUNT(pet_id) as count FROM Pet WHERE Pet.appuser_id = " +
@@ -32,8 +32,12 @@ public class PetDAO {
         return 0;
     }
 
+    /**
+     * Loads users and how many pets they have from the DB.
+     */
     public static void getMostActiveUsers () {
-        // Post condition: The new pet is saved the DB.
+        // Post condition: Most active user info is printed to scree.
+
         ResultSet results = null;
         // Using an aggregate COUNT() function, GROUP BY, ORDER BY, and selecting from multiple tables.
         String sql = "SELECT username, COUNT(pet_id) FROM appuser a JOIN Pet p ON a.appuser_id = p.appuser_id " +
@@ -41,15 +45,23 @@ public class PetDAO {
         try(Connection connection = DriverManager.getConnection(connectionUrl);
         PreparedStatement statement = connection.prepareStatement(sql);) {
             results = statement.executeQuery();
-            while (results.next()) {
+            // Limiting this to top 5 results.
+            Integer count = 0;
+            while (results.next() && count < 6) {
                 System.out.println(results.getString(1) + ": has " + results.getInt(2) +
                         " pets.");
+                count ++;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Updates deceased pet info in the DB.
+     *
+     * @param pet the pet who is deceased.
+     */
     public static void goodbyePet(Pet pet) {
         // precondition: pass in a pet instance that has passed on.
         // postcondition: we update the has_passed field in the database.
@@ -116,10 +128,14 @@ public class PetDAO {
         }
     }
 
-    public static void updateUserPetInfo(List<Pet> pets) throws SimpetOutputException {
-        // precondition: user passes in a file name that is a binary file
-        // postcondition: if the file name is valid binary format, the pet report card is written.
-        // Otherwise, a SimpetOutputException is thrown.
+    /**
+     * Updates pet info for the user after activity cycle.
+     *
+     * @param pets the list of pets.
+     */
+    public static void updateUserPetInfo(List<Pet> pets) {
+        // precondition: User's list of pets is passed as parameter.
+        // postcondition: DB is updated with new pet info.
 
         String sql = "UPDATE Pet SET mood = ?, health = ?, has_passed = ? WHERE Pet.pet_name = ?";
         try (Connection connection = DriverManager.getConnection(connectionUrl);

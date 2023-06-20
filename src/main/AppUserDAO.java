@@ -20,7 +20,7 @@ public class AppUserDAO {
      * @return whether the record exists.
      */
     public boolean checkIfUserExists (String name) {
-        // Post-condition: a boolean is returned representing whether the user is already saved to the D.
+        // Post-condition: a boolean is returned representing whether the user is already saved to the DB.
 
         String sql = "SELECT CASE WHEN EXISTS (SELECT * FROM appUser WHERE username = ?) THEN 'TRUE' ELSE 'FALSE' END";
         try (Connection connection = DriverManager.getConnection(connectionUrl);
@@ -46,7 +46,7 @@ public class AppUserDAO {
     public void saveUserInfo (String name) {
         // Post condition: The new user is saved to the DB.
 
-        // The id is serial type, and auto generates, so we only need to pass in the user name.
+        // The id is serial type, and auto generates, so we only need to pass in the username.
         String sql = "INSERT INTO appUser (username) values (?)";
         try (Connection connection = DriverManager.getConnection(connectionUrl);
              PreparedStatement statement1 = connection.prepareStatement(sql);) {
