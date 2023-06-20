@@ -33,6 +33,7 @@ public class CreateSimpetTables {
                         "pet_type text NOT NULL," +
                         "breed text," +
                         "appuser_id integer REFERENCES Appuser (appuser_id)" +
+                        "age int NOT NULL," +
                         ")";
                 statement2.executeUpdate(sql);
             }

@@ -260,12 +260,13 @@ public class PetSimulation {
                 Integer health = results.getInt(4);
                 Boolean hasPassed = results.getBoolean(5);
                 String petType = results.getString(6);
+                Integer age = results.getInt(9);
                 if (petType.equals("dog")) {
                     String breed = results.getString(7);
-                    Pet newPet = new Dog(petName, breed, mood, health, hasPassed);
+                    Pet newPet = new Dog(petName, breed, age, mood, health, hasPassed);
                     currentUser.addPet(newPet);
                 } else {
-                    Pet newPet = new Cat(petName, mood, health, hasPassed);
+                    Pet newPet = new Cat(petName, age, mood, health, hasPassed);
                     currentUser.addPet(newPet);
                 }
             }

@@ -14,8 +14,9 @@ public class Cat extends Pet implements Serializable {
         super(name);
     }
 
-    public Cat(String name, Integer mood, Integer health, Boolean hasPassed) {
+    public Cat(String name, Integer age, Integer mood, Integer health, Boolean hasPassed) {
         super(name);
+        this.age = age;
         this.mood = mood;
         this.health = health;
         this.hasPassed = hasPassed;

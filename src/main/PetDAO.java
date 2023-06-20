@@ -41,16 +41,13 @@ public class PetDAO {
         ResultSet results = null;
         // Using an aggregate COUNT() function, GROUP BY, ORDER BY, and selecting from multiple tables.
         String sql = "SELECT username, COUNT(pet_id) FROM appuser a JOIN Pet p ON a.appuser_id = p.appuser_id " +
-                "GROUP BY username ORDER BY COUNT(pet_id) DESC";
+                "GROUP BY username ORDER BY COUNT(pet_id) DESC LIMIT 5";
         try(Connection connection = DriverManager.getConnection(connectionUrl);
         PreparedStatement statement = connection.prepareStatement(sql);) {
             results = statement.executeQuery();
-            // Limiting this to top 5 results.
-            Integer count = 0;
-            while (results.next() && count < 6) {
+            while (results.next()) {
                 System.out.println(results.getString(1) + ": has " + results.getInt(2) +
                         " pets.");
-                count ++;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -106,7 +103,7 @@ public class PetDAO {
         // The id is serial type, and auto generates, so we do not pass in the ID value.
         String sql = "INSERT INTO Pet (pet_name, mood, health, has_passed, pet_type, breed, appuser_id)" +
                 // Using a select here to grab the user id so we don't have to load that in a separate query.
-                "values (?, ?, ?, ?, ?, ?, (SELECT appuser_id FROM appuser WHERE username = ?))";
+                "values (?, ?, ?, ?, ?, ?, (SELECT appuser_id FROM appuser WHERE username = ?), ?)";
         try (Connection connection = DriverManager.getConnection(connectionUrl);
              PreparedStatement statement = connection.prepareStatement(sql);) {
             statement.setString(1, pet.getName());
@@ -121,6 +118,7 @@ public class PetDAO {
                 statement.setNull(6, 0);
             }
             statement.setString(7, name);
+            statement.setInt(8, pet.getAge());
             statement.execute();
         }
         catch (SQLException e) {
@@ -137,15 +135,16 @@ public class PetDAO {
         // precondition: User's list of pets is passed as parameter.
         // postcondition: DB is updated with new pet info.
 
-        String sql = "UPDATE Pet SET mood = ?, health = ?, has_passed = ? WHERE Pet.pet_name = ?";
+        String sql = "UPDATE Pet SET age = ?, mood = ?, health = ?, has_passed = ? WHERE Pet.pet_name = ?";
         try (Connection connection = DriverManager.getConnection(connectionUrl);
              PreparedStatement statement = connection.prepareStatement(sql);) {
 
             for (Pet pet : pets) {
-                statement.setInt(1, pet.getMood());
-                statement.setInt(2, pet.getHealth());
-                statement.setBoolean(3, pet.getHasPassed());
-                statement.setString(4, pet.getName());
+                statement.setInt(1, pet.getAge());
+                statement.setInt(2, pet.getMood());
+                statement.setInt(3, pet.getHealth());
+                statement.setBoolean(4, pet.getHasPassed());
+                statement.setString(5, pet.getName());
                 statement.execute();
             }
 

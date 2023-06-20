@@ -15,8 +15,8 @@ public class PopulateSimpetTables {
                 + "password=" + SimpetConstants.databasePassword;
 
         String userSql = "INSERT INTO appUser (username) values (?)";
-        String petSql = "INSERT INTO Pet (pet_name, mood, health, has_passed, pet_type, breed, appuser_id) "
-         + "values (?, ?, ?, ?, ?, ?, (SELECT appuser_id FROM appuser WHERE username = ?))";
+        String petSql = "INSERT INTO Pet (pet_name, mood, health, has_passed, pet_type, breed, appuser_id, age) "
+         + "values (?, ?, ?, ?, ?, ?, (SELECT appuser_id FROM appuser WHERE username = ?), ?)";
         try (Connection connection = DriverManager.getConnection(connectionUrl);
              PreparedStatement userStatement = connection.prepareStatement(userSql);
              PreparedStatement petStatement = connection.prepareStatement(petSql);) {
@@ -36,6 +36,7 @@ public class PopulateSimpetTables {
             petStatement.setString(5, "cat");
             petStatement.setString(6, null);
             petStatement.setString(7, "Billy");
+            petStatement.setInt(8, 0);
 
             petStatement.setString(1, "Happy");
             petStatement.setInt(2, 100);
@@ -44,6 +45,7 @@ public class PopulateSimpetTables {
             petStatement.setString(5, "dog");
             petStatement.setString(6, "spaniel");
             petStatement.setString(7, "Billy");
+            petStatement.setInt(8, 0);
 
             petStatement.setString(1, "Mopey");
             petStatement.setInt(2, 100);
@@ -52,6 +54,7 @@ public class PopulateSimpetTables {
             petStatement.setString(5, "cat");
             petStatement.setString(6, null);
             petStatement.setString(7, "Sharon");
+            petStatement.setInt(8, 0);
         }
         catch (SQLException e) {
             e.printStackTrace();
