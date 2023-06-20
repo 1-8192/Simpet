@@ -5,8 +5,8 @@ import main.SimpetConstants;
 import java.sql.*;
 
 /**
- * Scripts to create the tables needed for the Simpet simulation. Please replace the postgres address and credentials
- * with you own. If you have a copy of the DB already, no need to run this.
+ * Scripts to poopulate the tables needed for the Simpet simulation with seed data. Please replace the postgres
+ * address and credentials with you own. If you have a copy of the DB already, no need to run this.
  */
 public class PopulateSimpetTables {
     public static void main(String[] args) {
@@ -14,27 +14,44 @@ public class PopulateSimpetTables {
                 + "user=" + SimpetConstants.databaseUsername + "&"
                 + "password=" + SimpetConstants.databasePassword;
 
+        String userSql = "INSERT INTO appUser (username) values (?)";
+        String petSql = "INSERT INTO Pet (pet_name, mood, health, has_passed, pet_type, breed, appuser_id) "
+         + "values (?, ?, ?, ?, ?, ?, (SELECT appuser_id FROM appuser WHERE username = ?))";
         try (Connection connection = DriverManager.getConnection(connectionUrl);
-             Statement statement1 = connection.createStatement();
-             Statement statement2 = connection.createStatement();) {
-            String sql =
-                    "CREATE TABLE IF NOT EXISTS appuser" +
-                            "(" +
-                            "    appuser_id serial NOT NULL PRIMARY KEY," +
-                            "    username text NOT NULL" +
-                            ")";
-            statement1.executeUpdate(sql);
-            sql = "CREATE TABLE IF NOT EXISTS Pet (" +
-                    "pet_id serial NOT NULL PRIMARY KEY," +
-                    "pet_name text NOT NULL," +
-                    "mood int NOT NULL ," +
-                    "health int NOT NULL," +
-                    "has_passed boolean NOT NULL," +
-                    "pet_type text NOT NULL," +
-                    "breed text," +
-                    "appuser_id integer REFERENCES Appuser (appuser_id)" +
-                    ")";
-            statement2.executeUpdate(sql);
+             PreparedStatement userStatement = connection.prepareStatement(userSql);
+             PreparedStatement petStatement = connection.prepareStatement(petSql);) {
+            // Inserting User data.
+            userStatement.setString(1, "Billy");
+            userStatement.execute();
+            userStatement.setString(1, "Sharon");
+            userStatement.execute();
+            userStatement.setString(1, "test");
+            userStatement.execute();
+
+            // Inserting Pet Data.
+            petStatement.setString(1, "Happy");
+            petStatement.setInt(2, 100);
+            petStatement.setInt(3, 100);
+            petStatement.setBoolean(4, false);
+            petStatement.setString(5, "cat");
+            petStatement.setString(6, null);
+            petStatement.setString(7, "Billy");
+
+            petStatement.setString(1, "Happy");
+            petStatement.setInt(2, 100);
+            petStatement.setInt(3, 100);
+            petStatement.setBoolean(4, false);
+            petStatement.setString(5, "dog");
+            petStatement.setString(6, "spaniel");
+            petStatement.setString(7, "Billy");
+
+            petStatement.setString(1, "Mopey");
+            petStatement.setInt(2, 100);
+            petStatement.setInt(3, 100);
+            petStatement.setBoolean(4, false);
+            petStatement.setString(5, "cat");
+            petStatement.setString(6, null);
+            petStatement.setString(7, "Sharon");
         }
         catch (SQLException e) {
             e.printStackTrace();

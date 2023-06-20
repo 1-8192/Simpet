@@ -8,6 +8,9 @@ in the ChatGptSimPet.md file.
 
 ### Running Instructions
 
-Clone the repo locally and navigate to the main.PetSimulation Java Class. Run the "main" method and follow
-the prompts to see your virtual pet come to life. Pet data is saved to the savedPets.bin file, so
-make sure saved data exists before loading from the file.
+1. Clone the repo locally. 
+2. If you have a copy of the postgres DB, please import it locally using PgAdmin or another 
+similar UI program, and ask me for login credentials, unless you want to use your own. Alternatively, you can run 
+the java classes in the 'scripts' folder to populate a new database with some test data. 
+3. Navigate to the main.PetSimulation Java Class. Run the "main" method and follow the prompts to see your virtual pet 
+come to life.
