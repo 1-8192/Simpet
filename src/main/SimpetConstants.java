@@ -13,10 +13,10 @@ public class SimpetConstants {
     /**
      * DB username.
      */
-    public static final String databaseUsername = "alessandroallegranzi";
+    public static final String databaseUsername = "yourusername";
 
     /**
      * DB password.
      */
-    public static final String databasePassword = "Gwyn1/8192";
+    public static final String databasePassword = "yourpassword";
 }

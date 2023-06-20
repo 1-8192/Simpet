@@ -32,8 +32,8 @@ public class CreateSimpetTables {
                         "has_passed boolean NOT NULL," +
                         "pet_type text NOT NULL," +
                         "breed text," +
-                        "appuser_id integer REFERENCES Appuser (appuser_id)" +
-                        "age int NOT NULL," +
+                        "appuser_id integer REFERENCES Appuser (appuser_id)," +
+                        "age int NOT NULL" +
                         ")";
                 statement2.executeUpdate(sql);
             }

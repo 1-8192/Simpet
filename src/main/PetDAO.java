@@ -101,7 +101,7 @@ public class PetDAO {
         // Post condition: The new pet is saved the DB.
 
         // The id is serial type, and auto generates, so we do not pass in the ID value.
-        String sql = "INSERT INTO Pet (pet_name, mood, health, has_passed, pet_type, breed, appuser_id)" +
+        String sql = "INSERT INTO Pet (pet_name, mood, health, has_passed, pet_type, breed, appuser_id, age)" +
                 // Using a select here to grab the user id so we don't have to load that in a separate query.
                 "values (?, ?, ?, ?, ?, ?, (SELECT appuser_id FROM appuser WHERE username = ?), ?)";
         try (Connection connection = DriverManager.getConnection(connectionUrl);

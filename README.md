@@ -8,7 +8,7 @@ in the ChatGptSimPet.md file.
 
 ### Running Instructions
 
-1. Clone the repo locally. 
+1. Clone the repo locally. Either using the terminal or your IDE install the Maven packages in pom.xml
 2. If you have a copy of the postgres DB, please import it locally using PgAdmin or another 
 similar UI program, and ask me for login credentials, unless you want to use your own. Alternatively, you can run 
 the java classes in the 'scripts' folder to populate a new database with some test data. 
