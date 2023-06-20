@@ -9,9 +9,9 @@ public class AppUserDAO {
     /**
      * connection string.
      */
-    private final String connectionUrl = "jdbc:postgresql://localhost/Simpet?"
-            + "user=alessandroallegranzi&"
-            + "password=Gwyn1/8192";
+    private static final String connectionUrl = SimpetConstants.connectionUrl
+            + "user=" + SimpetConstants.databaseUsername + "&"
+            + "password=" + SimpetConstants.databasePassword;
 
     /**
      * Checks whether a username is already saved to the DB.

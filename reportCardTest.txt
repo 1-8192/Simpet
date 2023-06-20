@@ -1,0 +1,10 @@
+Test User today you interacted with: 
+Name: Buddy, Breed: boxer, Age: 0, Health: 100, Mood: 100
+Name: Max, Breed: corgi, Age: 12, Health: 100, Mood: 100
+Name: Whiskers, Age: 0, Health: 100, Mood: 500
+Name: Smokey, Age: 18, Health: 100, Mood: 100
+Here are some general statistics for your pets:
+The average pet age was: 7.5
+Your oldest pet(s): Smokey
+Your happiest pet(s): Whiskers
+Your most common pet type: Cat

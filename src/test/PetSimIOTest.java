@@ -1,11 +1,8 @@
 package test;
 
 import main.*;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -47,54 +44,6 @@ public class PetSimIOTest {
     }
 
     /**
-     * Testing use case where invalid file format is used.
-     */
-//    @Test
-//    public void testLoadPetsFromFileWithInvalidFileFormat() {
-//        assertThrows(SimpetInputException.class, () -> {
-//            PetSimIO.loadPetsFromFile(user, textFileNameInvalid);
-//        });
-//    }
-
-    /**
-     * Testing pet load from a valid bin file.
-     */
-//    @Test
-//    public void testLoadPetsFromFileWithValidFile() {
-//        // Assuming you have a valid binary file containing pet objects for testing
-//        ArrayList<Pet> emptySet = new ArrayList<>();
-//        user.setPets(emptySet);
-//        assertDoesNotThrow(() -> {
-//            PetSimIO.loadPetsFromFile(user, binFileNameValid);
-//        });
-//
-//        Assertions.assertEquals(4, user.getPets().size());
-//    }
-
-    /**
-     * Testing an exception is thrown with a bad file type.
-     */
-//    @Test
-//    public void testSavePetsWithInvalidFileFormat() {
-//        User user = new User("Test User");
-//        String fileName = "pets.txt";
-//
-//        assertThrows(SimpetOutputException.class, () -> {
-//            PetSimIO.savePets(user, fileName);
-//        });
-//    }
-//
-//    /**
-//     * Testing that objects are written correctly to bin file.
-//     */
-//    @Test
-//    public void testSavePetsWithValidFile() {
-//        assertDoesNotThrow(() -> {
-//            PetSimIO.savePets(user, binFileNameValid);
-//        });
-//    }
-
-    /**
      * Testing the method to save pet results to a report card txt file.
      */
     @Test
@@ -106,6 +55,6 @@ public class PetSimIOTest {
 
         // Testing the output exception.
         assertDoesNotThrow(()-> PetSimIO.saveReportCard(user, goodFileName));
-        assertThrows(SimpetInputException.class, ()-> PetSimIO.saveReportCard(user, badFileName));
+        assertThrows(SimpetOutputException.class, ()-> PetSimIO.saveReportCard(user, badFileName));
     }
 }

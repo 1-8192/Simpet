@@ -1,8 +1,5 @@
 package main;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.sql.*;
 import java.util.List;
 
@@ -10,9 +7,9 @@ public class PetDAO {
     /**
      * connection string.
      */
-    private static final String connectionUrl = "jdbc:postgresql://localhost/Simpet?"
-            + "user=alessandroallegranzi&"
-            + "password=Gwyn1/8192";
+    private static final String connectionUrl = SimpetConstants.connectionUrl
+            + "user=" + SimpetConstants.databaseUsername + "&"
+            + "password=" + SimpetConstants.databasePassword;
 
     /**
      * Checks if the user has saved pets.
